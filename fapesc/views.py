@@ -172,7 +172,7 @@ def resultadoCaso(request):
         elif distancia == 0.8:
              simi = "50%"
         else:
-            simi = "nenhum caso similar"
+            simi = "nenhum caso similares"
         resultado = [caso, novoProblema, distancia, simi]
         if (resultado[2] == 0.0 or resultado[2] == 0.4): # or resultado[2] == 0.8):
             return resultado
