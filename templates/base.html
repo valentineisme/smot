@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>SMOT</title>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/base.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'semanticui/dist/semantic.css' %}"/>
+    <link rel="icon" type="image/png" href="/static/images/favicon-16x16.png" sizes="16x16">
+
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/issem.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'semanticui/dist/semantic.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.mask.js' %}"></script>
+
+</head>
+
+{% block body_tag %}
+    <body>
+{% endblock %}
+
+<header>
+    <div class="ui fluid">
+        <div class="ui container">
+            <h2 class="ui header green">
+                <img src="/static/images/logo.png"/>
+                <div class="content">
+                    SMOT
+                    <div class="sub header">Sistema de Monitoramento de Ocupação Territorial </div>
+                </div>
+                <div class="ui right aligned sub header">
+                    {% if user.is_anonymous %}
+                        Acesse sua Conta
+                        <div class="ui right aligned sub header">
+                            <a href="{% url 'login' %}">
+                                <i class="sign in icon"></i>
+                                <label>Logar</label>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="ui right aligned sub header">
+                            <div class="row">
+                                    <i class="ui  right large user icon"></i>
+
+                            </div>
+                        </div>
+                        <div class="ui right aligned sub header">
+                            {{ request.user }}
+                            {{ request.user.id }}
+                            <a href="{% url 'sair' %}">
+                                <i class="sign out icon"></i>
+                                <label>Sair</label>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </h2>
+        </div>
+    </div>
+</header>
+
+<nav class="ui green secondary inverted menu large" >
+    <div class="ui container">
+{#        <a href="{% url 'issem:index' %}" class="item">Home</a>#}
+    </div>
+</nav>
+
+<article>
+    <div class="ui container issem-content">
+        {% block body_block %}
+        {% endblock %}
+    </div>
+</article>
+
+<footer class="ui green secondary inverted vertical segment footer">
+    <div class="ui centered grid ">
+        Instituto Federal de Educação, Ciência e Tecnologia Catarinense - Câmpus Araquari </br>
+Rodovia BR 280 - km 27 - Cx. Postal 21 - CEP 89245-000 - Araquari - SC - Fone (47) 3803-7200 - Fax (47) 3803-7201
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<!-- /SCRIPTS -->
+
+</body>
+</html>

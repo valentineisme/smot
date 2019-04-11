@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+            <a  href="{% url 'index' %}"><i class="big arrow circle left icon red"></i></a>
+                <h1> Cadastro Usuario </h1>
+            <form class="ui form" id="usuario_form" method="post" action="/CadUser/">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                <div class="fields">
+                    {#começa#}
+                    <div class="five wide field"></div>
+                    <div class="six wide field">
+                        <label>Nome</label>
+                        {{ form.nome }}
+                        {% if form.nome.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.nome.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {#termina#}
+                    {#começa#}
+
+                    <div class="six wide field">
+                        <label>Sobrenome</label>
+                        {{ form.sobrenome }}
+                        {% if form.sobrenome.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.sobrenome.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="five wide field"></div>
+                    {#termina#}
+                </div>
+                <div class="fields">
+                    {#começa#}
+                    <div class="five wide field"></div>
+                    <div class="six wide field">
+                        <label>Data Nascimento</label>
+                        {{ form.dataNasc }}
+                        {% if form.dataNasc.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.dataNasc.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {#termina#}
+                </div>
+                <div class="fields" >
+                    {#começa#}
+                    <div class="five wide field"></div>
+                    <div class="six wide field">
+                        <label>Rua</label>
+                        {{ form.rua }}
+                        {% if form.rua.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.rua.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {#termina#}
+                    {#começa#}
+                    <div class="six wide field">
+                        <label>Numero</label>
+                        {{ form.numero }}
+                        {% if form.numero.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.numero.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="five wide field"></div>
+                    {#termina#}
+                </div>
+                <div class="fields" >
+                    {#começa#}
+                    <div class="five wide field"></div>
+                    <div class="six wide field">
+                        <label>Bairro</label>
+                        {{ form.bairro }}
+                        {% if form.bairro.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.bairro.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {#termina#}
+                    {#começa#}
+                    <div class="six wide field">
+                        <label>Cidade</label>
+                        {{ form.cidade }}
+                        {% if form.cidade.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.cidade.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="six wide field">
+                        <label>Estado</label>
+                        {{ form.estado }}
+                        {% if form.estado.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.estado.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="five wide field"></div>
+                    {#termina#}
+                </div>
+
+                <div class="fields" >
+                    {#começa#}
+                    <div class="five wide field"></div>
+                    <div class="six wide field">
+                        <label>Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.email.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {#termina#}
+                    {#começa#}
+                    <div class="six wide field">
+                        <label>Senha</label>
+                        {{ form.senha }}
+                        {% if form.senha.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.senha.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="five wide field"></div>
+                    {#termina#}
+                </div>
+
+                <div class="fields">
+                    <div class="five wide field"></div>
+                    <div class="six wide field">
+                    <label>Formação</label>
+                    <select name="formacao">
+                        <option> --------------- </option>
+                        <option value = "Fundamental Incompleto"> Fundamental Incompleto </option>
+                        <option value = "Fundamental Completo"> Fundamental Completo </option>
+                        <option value = "Superior Incompleto"> Superior Incompleto </option>
+                        <option value = "Superior Completo"> Superior Completo </option>
+                    </select>
+                    </div>
+                </div>
+
+
+                {% include 'blocos/buttons_form.html' %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

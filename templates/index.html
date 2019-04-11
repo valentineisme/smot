@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="ui centered grid">
+
+        <div class="four wide column">
+            <div class="ui menu">
+                <div class="ui dropdown fluid selection issem-dropdown">
+                    <h3 class="ui header"><i class="file icon"></i> Cadastro</h3>
+
+                    {# DROPDOWN #}
+                    <div class="menu">
+                        <a href="{% url 'FormImagem' %}" class="item">Cadastro Imagem <i class="calendar icon"></i></a>
+                        <a href="{% url 'FormComunidade' %}" class="item">Cadastro Comunidade <i class="calendar icon"></i></a>
+                        <a href="{% url 'FormCaso' %}" class="item">Cadastro Caso<i class="calendar icon"></i></a>
+                        <a href="{% url 'BuscarCaso' %}" class="item">Buscar Casos<i class="calendar icon"></i></a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="four wide column">
+            <div class="ui menu">
+                <div class="ui dropdown fluid selection issem-dropdown">
+                    <h3 class="ui header"><i class="history icon"></i> Histórico</h3>
+
+                    {# DROPDOWN #}
+                    <div class="menu">
+                        <a href="/MostrarHistoricos/" class="item">Mostrar Históricos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

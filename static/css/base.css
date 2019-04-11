@@ -1,0 +1,74 @@
+html, body {
+    height: 100%;
+}
+
+header {
+    padding-top: 3%;
+    padding-bottom: 1%;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #d4d4d4;
+    min-height: 14% !important;
+}
+
+article {
+    padding-top: 1%;
+    padding-bottom: 2%;
+    min-height: 66% !important;
+}
+
+footer {
+    padding-top: 2% !important;
+    min-height: 7% !important;
+}
+
+.issem-content {
+    margin-top: 15px;
+}
+
+.issem-dropdown {
+    text-align: center !important;
+    padding: 20px 0 10px 0 !important;
+}
+
+.issem-cad {
+    text-align: center;
+}
+
+.issem-input-small div {
+    min-width: 8em !important;
+}
+
+.issem-input-checkbox{
+    margin-top: 0 !important;
+    padding-top: 10px !important;
+    padding-bottom: 8px !important;
+    padding-left: 15px !important;
+    box-shadow: none !important;
+}
+
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.issem-input-radio {
+    box-shadow: none !important;
+    padding: 0;
+    padding-top: 10px;
+    margin: 0;
+}
+
+.issem-input-radio ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.issem-input-radio ul li {
+    display: inline;
+    margin-right: 20px;
+}
+.ui.large.menu {
+    margin-top: 0;
+}

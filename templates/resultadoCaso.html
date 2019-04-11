@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block body_block %}
+
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+            <a  href="{% url 'index' %}"><i class="big arrow circle left icon red"></i></a>
+            <h1>  </h1>
+            <form class="ui form" action="/cadHistorico/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="id_imagem" value="{{ id_imagem }}">
+                 <div class="fields">
+                    {#começa#}
+                    <div class="two wide field"></div>
+                    <div class="twelve wide field">
+                                {% for o in resultado %}
+                                    <input type="radio" name="resultado" value="{{ o }}">{{ o }}<br>
+                                {% endfor %}
+
+                                   <br><br>Se nenhum caso acima te ajudou <br> <a href="/FormCaso/">Cadastre um novo caso</a>
+                    </div>
+                    {#começa#}
+                    {#termina#}
+                    </div>
+                    {#termina#}
+                 </div>
+                <div class="five wide field"></div>
+    {% include 'blocos/buttons_form.html' %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+
+    <div class="ui middle aligned center aligned grid">
+        <form class="ui large form" action="/validacao/" method="post">{% csrf_token %}
+            <div class="ui segment red">
+                {% csrf_token %}
+                <div class="field">
+                    <label>Usuário:</label>
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="email" placeholder="Email">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Senha:</label>
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="senha" placeholder="Senha">
+                    </div>
+                </div>
+                <input type="submit" name="submit" class="ui button blue" value="Login"/>
+                <a href="/CadUser/">Cadastre-se</a>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}
