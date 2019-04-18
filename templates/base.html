@@ -7,7 +7,7 @@
     <link type="text/css" rel="stylesheet" href="{% static 'css/base.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'semanticui/dist/semantic.css' %}"/>
-    <link rel="icon" type="image/png" href="/static/images/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/static/images/logologo.png" sizes="16x16">
 
     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/issem.js' %}"></script>
@@ -25,10 +25,10 @@
     <div class="ui fluid">
         <div class="ui container">
             <h2 class="ui header green">
-                <img src="/static/images/logo.png"/>
                 <div class="content">
-                    SMOT
-                    <div class="sub header">Sistema de Monitoramento de Ocupação Territorial </div>
+                    <a class="item"  href="/">
+                        <img src="/static/images/logos.png" width="600"/>
+                    </a>
                 </div>
                 <div class="ui right aligned sub header">
                     {% if user.is_anonymous %}

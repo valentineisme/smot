@@ -11,7 +11,7 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login, name='login'),
-    url(r'^index/', views.index, name='index'),
+    url(r'^$', views.index, name='index'),
     url(r'^inicial/', views.inicial, name='inicial'),
     url(r'^CadUser/$', views.CadUser, name='CadUser'),
     url(r'^validacao/$', views.validacao, name='validacao'),
