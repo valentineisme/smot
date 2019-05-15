@@ -1,30 +1,57 @@
-html, body {
-    height: 100%;
-}
-
-header {
-    padding-top: 3%;
-    padding-bottom: 1%;
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #d4d4d4;
-    min-height: 14% !important;
-}
-
-article {
-    padding-top: 1%;
-    padding-bottom: 2%;
-    min-height: 66% !important;
-}
-
 footer {
-    padding-top: 2% !important;
+    padding-top: 1% !important;
     min-height: 7% !important;
+    width: 100%;
+    background-color: #003831 !important;
+    margin: 0 !important;
 }
 
-.issem-content {
-    margin-top: 15px;
+.botao_main{
+    background-color: #003831 !important;
 }
 
+.meio_inicio {
+    background-image: url("../images/planoDeFundo.jpg") !important;
+    background-repeat: no-repeat !important;
+	background-size: cover !important;
+	width: 100% !important;
+    height: 100vh !important;
+}
+
+.meio_logado {
+    background-repeat: no-repeat !important;
+	background-size: cover !important;
+	width: 100% !important;
+    height: 100vh !important;
+}
+
+.bloco_inicio {
+    height: 100vh !important;
+}
+
+.textoMonitoramento{
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 25%;
+    margin: 1px auto;
+    display: block;
+    text-align: center;
+    font-size: 2.5em !important;
+    font-family: 'Marvel', sans-serif !important;
+}
+
+.textoMonitoramento .header{
+    color: #005b6d !important;
+}
+
+#topo
+{
+    background-color: #003831;
+    min-height: 10% !important;
+}
+
+/*------------------------------*/
 .issem-dropdown {
     text-align: center !important;
     padding: 20px 0 10px 0 !important;

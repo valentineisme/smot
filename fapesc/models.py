@@ -41,14 +41,14 @@ class usuario(models.Model):
     nome = models.CharField(max_length=128)
     sobrenome = models.CharField(max_length=128)
     dataNasc = models.DateField(blank=True, null=True)
-    rua = models.CharField(max_length=128)
-    numero = models.IntegerField(default=0)
-    bairro = models.CharField(max_length=128)
-    cidade = models.CharField(max_length=128)
-    estado = models.CharField(max_length=128)
+    # rua = models.CharField(max_length=128)
+    # numero = models.IntegerField(default=0)
+    # bairro = models.CharField(max_length=128)
+    # cidade = models.CharField(max_length=128)
+    # estado = models.CharField(max_length=128)
     email = models.CharField(max_length=128)
     senha = models.CharField(max_length=128, null=True)
-    formacao = models.CharField(max_length=128)
+    # formacao = models.CharField(max_length=128)
 
     class Meta:
         verbose_name = 'Usuario'

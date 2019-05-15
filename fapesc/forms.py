@@ -8,17 +8,17 @@ class UsuarioForm(forms.ModelForm):
     sobrenome = forms.CharField(max_length=128, help_text='Sobrenome:')
     dataNasc = forms.DateField(help_text='Data:')
 
-    rua = forms.CharField(max_length=128, help_text='Rua:')
-    numero = forms.IntegerField(help_text='Numero:')
-    bairro = forms.CharField(max_length=128, help_text='Bairro:')
-    cidade = forms.CharField(max_length=128, help_text='Cidade:')
-    estado = forms.CharField(max_length=128, help_text='Estado:')
+    # rua = forms.CharField(max_length=128, help_text='Rua:')
+    # numero = forms.IntegerField(help_text='Numero:')
+    # bairro = forms.CharField(max_length=128, help_text='Bairro:')
+    # cidade = forms.CharField(max_length=128, help_text='Cidade:')
+    # estado = forms.CharField(max_length=128, help_text='Estado:')
     email = forms.CharField(max_length=128, help_text='E-mail:')
     senha = forms.CharField(max_length=128, widget=forms.PasswordInput, help_text='Senha:')
 
     class Meta:
         model = usuario
-        fields = ('nome','sobrenome','dataNasc','rua','numero','bairro','cidade','estado','email','senha')
+        fields = ('nome','sobrenome','dataNasc','email','senha')
 
 
 class ComunidadeForm(forms.ModelForm):

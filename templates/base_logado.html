@@ -5,8 +5,11 @@
 {% include 'blocos/head.html' %}
 {% include 'blocos/topo.html' %}
 
-<body class="meio_inicio">
+<body class="meio_logado">
     <div class="bloco_inicio">
+        <div class="menu_lateral">
+            {% include 'menu/menuVertical.html' %}
+        </div>
         {% block body_block %}
         {% endblock %}
     </div>
@@ -15,6 +18,5 @@
 {% include 'blocos/footer.html' %}
 
 </html>
-
 
 
