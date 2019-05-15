@@ -1,0 +1,71 @@
+<div class="ui modal modalCadastro">
+    <h1> Cadastro Usuario </h1>
+    <form class="ui form" id="usuario_form" method="post" action="/CadUser/">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+
+        <div class="fields">
+            <div class="five wide field"></div>
+            <div class="six wide field">
+                <label>Nome</label>
+                {{ form.nome }}
+                {% if form.nome.errors %}
+                    <div class="ui pointing red basic label">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="five wide field"></div>
+            <div class="six wide field">
+                <label>Sobrenome</label>
+                {{ form.sobrenome }}
+                {% if form.nome.errors %}
+                    <div class="ui pointing red basic label">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="five wide field"></div>
+            <div class="six wide field">
+                <label>Data Nascimento</label>
+                {{ form.dataNasc }}
+                {% if form.nome.errors %}
+                    <div class="ui pointing red basic label">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="five wide field"></div>
+            <div class="six wide field">
+                <label>E-mail</label>
+                {{ form.email }}
+                {% if form.nome.errors %}
+                    <div class="ui pointing red basic label">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="five wide field"></div>
+            <div class="six wide field">
+                <label>Senha</label>
+                {{ form.senha }}
+                {% if form.nome.errors %}
+                    <div class="ui pointing red basic label">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% include 'blocos/buttons_form.html' %}
+    </form>
+</div>

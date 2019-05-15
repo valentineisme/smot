@@ -1,0 +1,16 @@
+<div class="fields">
+    <div class="five wide field"></div>
+    <div class="six wide field">
+        <label>Selecione Comunidade</label>
+    {% if id_comunidade %}
+        <input id="comunidade" maxlength="78" name="comunidade" type="hidden" value="{{id_comunidade}}"> {{ nome }}
+    {% else %}
+        {{ form.comunidade }}
+        {% if form.comunidade.errors %}
+            <div class="ui pointing red basic label">
+                {{ form.comunidade.errors }}
+            </div>
+        {% endif %}
+    {% endif %}
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body_block %}
+
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+            <a  href="{% url 'index' %}"><i class="big arrow circle left icon red"></i></a>
+            <h1>  </h1>
+            <form class="ui form" action="//" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 <div class="fields">
+                    {#começa#}
+                    <div class="three wide field"></div>
+                    <div class="ten wide field">
+
+                    {{ historico }}
+                    </div>
+                    {#começa#}
+                    {#termina#}
+                    </div>
+                    {#termina#}
+                 </div>
+
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+
