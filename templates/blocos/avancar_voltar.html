@@ -1,11 +1,35 @@
-<div class="ui two bottom attached buttons">
-    <a class="ui left labeled icon secundary button disabled">
-        <i class="left arrow icon"></i>
-        Voltar
-    </a>
+<div class="ui two bottom attached buttons botao_inferior">
+    {% if step == 2 %}
+        <a href="/monitoramento/" class="ui left labeled icon botaoProximo button">
+    {% elif step == 3 %}
+        <a href="/monitoramento/{{ comunidade }}" class="ui left labeled icon botaoProximo button">
+    {% elif step == 4 %}
+        <a href="/monitoramento/?idcomu={{ id_comu }}&idimagem={{ id_imagem }}" class="ui left labeled icon botaoProximo button">
+    {% elif step == 5 %}
+{#        <a href="/monitoramento/{{ id_imagem }}" class="ui left labeled icon botaoProximo button">#}
+    {% elif imagem %}
+        <a href="/Historico/?comu={{ imagem.comunidade.id }}" class="ui left labeled icon botaoProximo button">
+    {% elif voltar_hist %}
+        <a href="/Historico/" class="ui left labeled icon botaoProximo button">
+    {% else %}
+        <a class="ui left labeled icon botaoProximo button disabled">
+    {% endif %}
 
-    <button type="submit" class="ui right labeled icon botaoProximo button">
+    <i class="left arrow icon"></i>
+    Voltar
+    </a>
+    {% if step != 5 %}
+        {% if step != 3 %}
+            <button type="submit" class="ui right labeled icon botaoProximo button" disabled="True">
+        {% else %}
+            <button type="submit" class="ui right labeled icon botaoProximo button"">
+        {% endif %}
         <i class="right arrow icon"></i>
         Próximo Passo
+    {% else %}
+        <button type="submit" class="ui right labeled icon botaoProximo button"">
+        <i class="right arrow icon"></i>
+        <a href="/Historico/?id_comu={{ id_comu }}&id_imagem={{ id_imagem }}">Ver Histórico</a>
+    {% endif %}
     </button>
 </div>

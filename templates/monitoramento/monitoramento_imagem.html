@@ -1,0 +1,92 @@
+{% extends 'base_logado.html' %}
+
+{% block body_block %}
+    {% include 'imagem/modalImagem.html' %}
+    {% include 'blocos/steps.html' %}
+
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Monitoramento em {{ comunidade.nome }}</div>
+                <button class="right floated ui labeled botaoUpload icon button adicionarImagem">
+                        <i class="icon add"></i>
+                            Adicione uma nova Imagem
+                    </button>
+                </th>
+            </tr>
+            </thead>
+        </table>
+{#            <article class="ui center aligned basic segment">#}
+{#                <div class="ui horizontal divider">#}
+{#                    Ou#}
+{#                </div>#}
+{##}
+{#                <div class="ui left icon action input">#}
+{#                    <h3 class="ui header">#}
+{#                        Selecione uma Imagem#}
+{#                    </h3>#}
+{#                </div>#}
+{##}
+{#            </article>#}
+            <form class="ui form" action="/monitoramento/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="comunidade" value="{{ comunidade.id }}">
+                <article class="ui centered cards" id="div_img">
+                    {% if dados %}
+                        {% for dado in dados %}
+
+                            <div class="ui card">
+                                <div class="image">
+                                    <span id="corner{{ dado.id }}"></span>
+                                    <img src="/media/media/{{ dado.img }}">
+                                </div>
+                                <div class="content">
+                                    <a class="header">{{ dado.dataImagem }}</a>
+                                    <div class="item">
+                                        {{ dado.latitude }}
+                                    </div>
+                                    <div class="item">
+                                        {{ dado.longitude }}
+                                    </div>
+                                    <div class="ui divided list">
+                                        <div class="item">
+                                            <a class="ui green bottom attached button" id="img{{ dado.id }}"
+                                               onclick="monitoramento_imagem({{ dado.id }}), ativar()">
+                                                <i class="add icon"></i>
+                                                Selecionar imagem
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="ui card">
+                            Não há imagens cadastradas.
+                        </div>
+                    {% endif %}
+                </article>
+                            <div class="ui right floated pagination secondary menu">
+                                {% if dados.has_previous %}
+                                    <a href="?page={{ dados.previous_page_number }}&comu={{ comunidade.id }}"
+                                       class="icon item">
+                                        <i class="left chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                                <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                                {% if dados.has_next %}
+                                    <a href="?page={{ dados.next_page_number }}&comu={{ comunidade.id }}"
+                                       class="icon item">
+                                        <i class="right chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                {% include 'blocos/avancar_voltar.html' %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

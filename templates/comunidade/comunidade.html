@@ -1,16 +1,82 @@
-<div class="fields">
-    <div class="five wide field"></div>
-    <div class="six wide field">
-        <label>Selecione Comunidade</label>
-    {% if id_comunidade %}
-        <input id="comunidade" maxlength="78" name="comunidade" type="hidden" value="{{id_comunidade}}"> {{ nome }}
-    {% else %}
-        {{ form.comunidade }}
-        {% if form.comunidade.errors %}
-            <div class="ui pointing red basic label">
-                {{ form.comunidade.errors }}
-            </div>
+{% extends 'base_logado.html' %}
+{% block body_block %}
+<div class="ui segment issem-cad modalpadrao">
+    {% csrf_token %}
+    <table class="ui striped celled unstackable table" id="tabela_lista">
+        <thead>
+        <tr>
+            <th class="no-sort" colspan="5">
+                <div class="ui default ribbon large label">Lista de Comunidades</div>
+                <input class="campo_pesquisa" id="filtro_pesquisa" placeholder="pesquisar comunidade"/>
+                {% if user.id %}
+                    <button class="right floated ui labeled botaoUpload icon button adicionarComu">
+                        <i class="icon add"></i>
+                            Adicionar Comunidade
+                    </button>
+                {% endif %}
+            </th>
+
+        </tr>
+        <tr>
+            <th>Nome</th>
+            {% if user.id %}
+                <th class="collapsing center aligned" colspan="2">Ações</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% if dados %}
+            {% for dado in dados %}
+                <tr>
+                    <td>
+                        <a class="item" href="{% url 'monitoramento' dado.id %}">{{ dado.nome }}</a>
+                    </td>
+                    {% if user.id %}
+                        <td class="collapsing center aligned">
+                            <input type="hidden" id="{{ dado.id }}" value="{{ dado.nome }}"/>
+                            <a class="cursorPointer editarComu" onclick="comu_editar({{ dado.id }});">
+                                <i class="ui write grey large icon"></i>
+                            </a>
+                        </td>
+                        <td class="collapsing center aligned">
+                            <a class="cursorPointer excluirComu" onclick="comu_excluir({{ dado.id }});">
+                                <i class="ui trash red large icon"></i>
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td>Não há dados cadastrados.</td>
+            </tr>
         {% endif %}
-    {% endif %}
-    </div>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th colspan="5">
+                <div class="ui right floated pagination secondary menu">
+                    {% if dados.has_previous %}
+                        <a href="?page={{ dados.previous_page_number }}" class="icon item">
+                            <i class="left chevron icon"></i>
+                        </a>
+                    {% endif %}
+                    <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                    {% if dados.has_next %}
+                        <a href="?page={{ dados.next_page_number }}" class="icon item">
+                            <i class="right chevron icon"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </th>
+        </tr>
+        </tfoot>
+    </table>
 </div>
+
+    {% include 'comunidade/modalComunidade.html' %}
+    {% include 'comunidade/modalEditarComunidade.html' %}
+    {% include 'comunidade/modalExcluirComunidade.html' %}
+
+{% endblock %}
+

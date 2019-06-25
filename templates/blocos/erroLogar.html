@@ -1,10 +1,14 @@
-<div class="ui modal middle aligned center aligned grid modalLogar">
-    <i class="close icon"></i>
-    <div class="header">
-        <i class="ui user default inverted circular icon"></i> Entrar
-    </div>
+{% extends 'base_logado.html' %}
+
+{% block body_block %}
+
+<div class="ui middle aligned center aligned grid">
 
     <div class="modalpadrao">
+        <div class="ui negative message">
+                        <div class="header">Usuário ou Senha incorretos!</div>
+                        <p>Por favor, verifique os dados e tente novamente.</p>
+                    </div>
         <form class="ui large form" action="/validacao/" method="post">{% csrf_token %}
             <div class="ui segment red">
                 {% csrf_token %}
@@ -28,5 +32,7 @@
         </form>
     </div>
 </div>
+    {% include 'cadastro_usuario/modalCadUser.html' %}
+{% endblock %}
 
 

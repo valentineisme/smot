@@ -1,0 +1,59 @@
+<div class="ui modal segment issem-cad modalListarComu">
+    <i class="close icon"></i>
+    <div class="header">
+        <i class="ui book default inverted circular icon"></i> Comunidades Monitoradas
+    </div>
+    <div class="modalpadrao">
+        {% csrf_token %}
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Lista de Comunidades</div>
+                    <input class="campo_pesquisa" id="filtro_pesquisa" placeholder="pesquisar comunidade"/>
+
+                </th>
+
+            </tr>
+            <tr>
+                <th>Nome</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if dados %}
+                {% for dado in dados %}
+                    <tr>
+                        <td>
+                            <a class="item" href="{% url 'monitoramento' dado.id %}">{{ dado.nome }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td>Não há dados cadastrados.</td>
+                </tr>
+            {% endif %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="5">
+                    <div class="ui right floated pagination secondary menu">
+                        {% if dados.has_previous %}
+                            <a href="?page={{ dados.previous_page_number }}" class="icon item">
+                                <i class="left chevron icon"></i>
+                            </a>
+                        {% endif %}
+                        <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                        {% if dados.has_next %}
+                            <a href="?page={{ dados.next_page_number }}" class="icon item">
+                                <i class="right chevron icon"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+

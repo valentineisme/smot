@@ -1,17 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% csrf_token %}
 {% block body_block %}
  <div class="textoMonitoramento">
      <div class="ui header">Sistema de Monitoramento de Ocupação Territorial</div>
         {% if user.is_anonymous %}
             <button class="ui white large button botaoFacaParte cadastrarUsuario">Faça Parte!</button>
-            <a href="{% url 'CadUser' %}"><button class="ui white large button botaoFacaParte cadastro">Veja Comunidades Monitoradas</button></a>
+            <button class="ui white large button botaoFacaParte verHistorico">Veja Comunidades Monitoradas</button>
         {% else %}
-            <a href="{% url 'FormImagem' %}"><button class="ui white large button botaoFacaParte cadastro">Faça Monitoramento</button></a>
-            <a href="{% url 'MostrarHistoricos' %}"><button class="ui white large button botaoFacaParte cadastro">Veja Históricos</button></a>
+            <a class="item" href="{% url 'monitoramento' %}"><button class="ui white large button botaoFacaParte cadastro">Faça Monitoramento</button></a>
+            <a class="item" href="{% url 'Historico' %}"><button class="ui white large button botaoFacaParte verHistorico">Veja Históricos</button></a>
         {% endif %}
-     <a href="{% url 'CadUser' %}"><button class="ui white large button botaoFacaParte cadastro">Sobre Nós</button></a>
+     <button class="ui white large button botaoFacaParte verSobre">Sobre Nós</button>
  </div>
+
+
+    {% include 'cadastro_usuario/modalCadUser.html' %}
+    {% include 'comunidade/listaComunidade.html' %}
+    {% include 'blocos/sobre.html' %}
 {% endblock %}
-{% include 'cadastro_usuario/CadUser.html' %}
+
+

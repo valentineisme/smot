@@ -1,0 +1,39 @@
+<div class="ui modal modalCadImagem">
+    <div class="ui segment issem-cad modalpadrao">
+        <form action="/Imagem_Cadastro/" method="post">{% csrf_token %}
+            <div class="header">
+                <i class="ui book default inverted circular icon"></i> Cadastro Imagens
+            </div>
+            <table class="ui center aligned table">
+                <tr>
+                    <td colspan="2">
+                        <select onchange="ativar()" name="comu" id="comu" class="campo_cadastro" required="True">
+                            <option value="selecione">Selecione uma Comunidade</option>
+                            {% for comunidade in comunidades %}
+                                <option value="{{ comunidade.id }}">{{ comunidade.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Imagem</td>
+
+                    <td>Data</td>
+                </tr>
+                <tr>
+                    <td><input type="file" name="imagem" class="campo_cadastro" required></td>
+                    <td><input type="date" name="data" class="campo_cadastro" required></td>
+                </tr>
+                <tr>
+                    <td>Latitude</td>
+                    <td>Longitude</td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="lati" class="campo_cadastro" required></td>
+                    <td><input type="text" name="longi" class="campo_cadastro" required></td>
+                </tr>
+            </table>
+            {% include "blocos/buttons_form.html" %}
+        </form>
+    </div>
+</div>

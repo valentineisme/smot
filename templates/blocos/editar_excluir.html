@@ -1,0 +1,9 @@
+<div class="ui two bottom attached buttons botao_inferior">
+    <button class="ui left labeled icon secundary botaoProximo editarImagem button">
+        <i class="ui write grey large icon"></i>
+    </button>
+    <button type="submit" class="ui right labeled icon botaoProximo ExcluirImagem button" onclick="imagem_excluir({{ dado.id }},{{ comunidade.id }});" >
+    <i class="ui trash red large icon"></i>
+    </button>
+    {% include "imagem/modalExcluirImagem.html" %}
+</div>

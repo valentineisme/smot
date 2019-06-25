@@ -1,0 +1,82 @@
+{% extends 'base_logado.html' %}
+{% block body_block %}
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+            <table class="ui striped celled unstackable table" id="tabela_lista">
+                <thead>
+                <tr>
+                    <th class="no-sort" colspan="5">
+                        <div class="ui default ribbon large label">Histórico de {{ imagem.comunidade.nome }}
+                            em {{ imagem.dataImagem }}</div>
+                    </th>
+                </tr>
+                </thead>
+            </table>
+            <form class="ui form" action="/Historico/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="comu" value="{{ comunidade.id }}">
+
+                <div class="ui three column grid">
+                    {% if dados %}
+                        {% for dado in dados %}
+                            <script>
+                                $(document).ready(function () {
+                                    $('.ui.modal.{{ dado.id }}')
+                                        .modal('setting', 'closable', true)
+                                        .modal('attach events', '.{{ dado.id }}', 'show')
+                                        .modal('attach events', '.ui.button.ok', 'hide');
+                                })
+                            </script>
+                            {% include 'historico/modalDetalhesHist.html' %}
+
+
+                            <div class="column lista {{ dado.id }}">
+                                <div class="ui segment">
+                                    <img src="/media//media/{{ dado.imagem.img }}" width="300" height="300"><br>
+                                    {{ dado.imagem.comunidade.nome }}<br>
+                                    Data do Monitoramento: {{ dado.data }}
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    {% else %}
+                        <div class="ui three column grid">
+                            sem histórico dessa comunidade nessa data
+                        </div>
+                    {% endif %}
+
+                </div>
+                <table class="ui striped celled unstackable table" id="tabela_lista">
+                    <tfoot>
+                    <tr>
+                        <th colspan="5">
+                            <a href="/Historico/?comu={{ imagem.comunidade.id }}"
+                               class="ui left labeled icon botaoProximo button">
+                                <i class="left arrow icon"></i>
+                                Voltar
+                            </a>
+                            <div class="ui right floated pagination secondary menu">
+                                {% if dados.has_previous %}
+                                    <a href="?page={{ dados.previous_page_number }}&id_comu={{ imagem.comunidade.id }}&id_imagem={{ imagem.id }}"
+                                       class="icon item">
+                                        <i class="left chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                                <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                                {% if dados.has_next %}
+                                    <a href="?page={{ dados.next_page_number }}&id_comu={{ imagem.comunidade.id }}&id_imagem={{ imagem.id }}"
+                                       class="icon item">
+                                        <i class="right chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </th>
+                    </tr>
+                    </tfoot>
+                </table>
+
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

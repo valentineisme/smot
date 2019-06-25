@@ -1,26 +1,30 @@
 {% load static %}
 <nav class="ui huge borderless inverted menu large grid" id="topo">
     {% if user.is_anonymous %}
-        <a class="item"  href="/">
-                    <img src="{% static  'images/soloologo.png' %}" id="logo"> SMOT
-                </a>
+        <a class="item" href="/">
+            <img src="{% static  'images/soloologo.png' %}" id="logo"> SMOT
+        </a>
         <div class="right menu">
-            <a class="item acessarConta" href="{% url 'login' %}">
+            <a class="item logar">
                 <i class="sign in icon"></i>
-                    <label>Entrar</label>
+                <label>Entrar</label>
             </a>
         </div>
     {% else %}
-        <a class="item"  href="/">
-                    <img src="{% static  'images/soloologo.png' %}" id="logo"> SMOT
-                </a>
-{#        {% include 'menuLogado.html' %}#}
+        <a class="item" href="/">
+            <img src="{% static  'images/soloologo.png' %}" id="logo"> SMOT
+        </a>
+        {% if user.is_staff %}
+            {% include 'menu/menuLogado.html' %}
+        {% endif %}
         <div class="right menu">
             <a class="item acessarConta"> Usuário: {{ request.user }} </a>
             <a class="item acessarConta" href="{% url 'sair' %}">
                 <i class="sign out icon"></i>
-                    <label>Sair</label>
+                <label>Sair</label>
             </a>
         </div>
     {% endif %}
 </nav>
+
+{% include "blocos/login.html" %}

@@ -1,0 +1,73 @@
+{% extends 'base_logado.html' %}
+{% block body_block %}
+    <div class="ui segment issem-cad modalpadrao">
+        {% csrf_token %}
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Lista de Imagens de {{ comunidade.nome }}</div>
+                    <button class="right floated ui labeled botaoUpload icon button adicionarImagem">
+                        <i class="icon add"></i>
+                            Adicionar Imagem
+                    </button>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <article class="ui centered cards" id="div_img">
+            {% if dados %}
+                {% for dado in dados %}
+
+                    <div class="ui card">
+                        <div class="image">
+                            <span id="corner{{ dado.id }}"></span>
+                            <img src="/media/media/{{ dado.img }}">
+                        </div>
+                        <div class="content">
+                            <a class="header">{{ dado.dataImagem }}</a>
+                            <div class="item">
+                                {{ dado.latitude }}
+                            </div>
+                            <div class="item">
+                                {{ dado.longitude }}
+                            </div>
+                            <div class="ui divided list">
+                                    {% include 'blocos/editar_excluir.html' %}
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="ui card">
+                    Não há imagens cadastradas.
+                </div>
+            {% endif %}
+        </article>
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <tfoot>
+            <tr>
+                <th colspan="5">
+                    <a href="/Imagem/" class="ui left labeled icon secundary button"><i class="left arrow icon"></i>Voltar</a>
+                    <div class="ui right floated pagination secondary menu">
+                        {% if dados.has_previous %}
+                            <a href="?page={{ dados.previous_page_number }}&comu={{ comunidade.id }}" class="icon item">
+                                <i class="left chevron icon"></i>
+                            </a>
+                        {% endif %}
+                        <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                        {% if dados.has_next %}
+                            <a href="?page={{ dados.next_page_number }}&comu={{ comunidade.id }}" class="icon item">
+                                <i class="right chevron icon"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    {% include 'imagem/modalImagem.html' %}
+
+{% endblock %}

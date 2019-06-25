@@ -1,20 +1,52 @@
 <header class="ui ordered fluid tablet stackable steps">
-    <div class="active step">
-        <div class="content">
-            <div class="title">Selecionar Localização</div>
-            <div class="description">Comnunidade</div>
-        </div>
+    {% if step == 1 %}
+        <div class="active step">
+    {% else %}
+        <div class="disabled step">
+    {% endif %}
+    <div class="content">
+        <div class="title">Selecionar Localização</div>
+        <div class="description">Comnunidade</div>
     </div>
-    <div class="disabled step">
-        <div class="content">
-            <div class="title">Selecionar Imagem</div>
-            <div class="description">Imagem referente a localização</div>
-        </div>
     </div>
-    <div class="disabled step">
-        <div class="content">
-            <div class="title">Regras</div>
-            <div class="description">Caso que se encontra sua comunidade</div>
-        </div>
+    {% if step == 2 %}
+        <div class="active step">
+    {% else %}
+        <div class="disabled step">
+    {% endif %}
+    <div class="content">
+        <div class="title">Selecionar Imagem</div>
+        <div class="description">Imagem referente a {{ comunidade.nome }}</div>
+    </div>
+    </div>
+    {% if step == 3 %}
+        <div class="active step">
+    {% else %}
+        <div class="disabled step">
+    {% endif %}
+    <div class="content">
+        <div class="title">Regras</div>
+        <div class="description">Seu caso em {{ imagem.comunidade.nome }}</div>
+    </div>
+    </div>
+    {% if step == 4 %}
+        <div class="active step">
+    {% else %}
+        <div class="disabled step">
+    {% endif %}
+    <div class="content">
+        <div class="title">Casos Similares</div>
+        <div class="description">Casos similares</div>
+    </div>
+    </div>
+    {% if step == 5 %}
+        <div class="active step">
+    {% else %}
+        <div class="disabled step">
+    {% endif %}
+    <div class="content">
+        <div class="title">Monitoramento Final</div>
+        <div class="description">Histórico</div>
+    </div>
     </div>
 </header>

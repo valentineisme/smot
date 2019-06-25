@@ -1,0 +1,146 @@
+{% extends 'base_logado.html' %}
+
+{% block body_block %}
+    {% include 'blocos/steps.html' %}
+
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+            <table class="ui striped celled unstackable table" id="tabela_lista">
+                <thead>
+                <tr>
+                    <th class="no-sort" colspan="5">
+                        <div class="ui default ribbon large label">Casos Similares</div>
+                        <div class="right floated ui labeled icon button">
+                            <i class="icon hand point right outline"></i>{{ novo }}
+                            || {{ current_imagem.comunidade.nome }} em {{ current_imagem.dataImagem }}
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+            </table>
+            <form class="ui form" action="/monitoramento/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="caso_selecionado" value="{{ id_imagem }}">
+                <table class="ui striped celled unstackable table tabelas" id="tabela_lista">
+                    <tr>
+                        <td>-</td>
+                        <td colspan="3">Relação</td>
+                        <td>Distância</td>
+                        <td>Plano de Ação</td>
+                        <td>Resultado</td>
+                        <td>Similaridade</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+
+                                {% for o in resultado %}
+                                    <tr>
+                                        <td><input type="radio" name="resultado" onclick="ativar()" value="{{ o }}">
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+
+                                {% for o in o1 %}
+                                    <tr>
+                                        <td>{{ o }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+
+                                {% for r in relac %}
+                                    <tr>
+                                        <td>{{ r }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+
+                                {% for oo in o2 %}
+                                    <tr>
+                                        <td>{{ oo }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+
+                                {% for m in metros %}
+                                    <tr>
+                                        <td>{{ m }} m</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+                                </tr>
+                                {% for p in plano %}
+                                    <tr>
+                                        <td>{{ p }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+
+                                {% for c in cor %}
+                                    <tr>
+                                        <td>{{ c }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+
+                                {% for s in similaridade %}
+                                    <tr>
+                                        <td>{{ s }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <table class="ui striped celled unstackable table">
+                    <tfoot>
+                    <tr>
+                        <th colspan="8">
+                        <a class="ui left labeled icon secundary button cadCaso"><i class="icon add"></i>Se nenhum Caso acima te ajudou, cadastre um Novo Caso</a>
+                            <div class="ui right floated pagination secondary menu">
+                                {% if dados.has_previous %}
+                                    <a href="?page={{ dados.previous_page_number }}" class="icon item">
+                                        <i class="left chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                                <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                                {% if dados.has_next %}
+                                    <a href="?page={{ dados.next_page_number }}" class="icon item">
+                                        <i class="right chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </th>
+                    </tr>
+                    </tfoot>
+                </table>
+        </div>
+        {% include 'blocos/avancar_voltar.html' %}
+        </form>
+        {% include 'caso/FormCaso.html' %}
+    </div>
+    </div>
+
+{% endblock %}

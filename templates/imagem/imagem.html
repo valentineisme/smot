@@ -1,0 +1,32 @@
+{% extends 'base_logado.html' %}
+
+{% block body_block %}
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Administração de Imagem</div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+            <form class="ui form" action="/Imagem_Lista/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                    <select onchange="ativar()" name="comu" id="comu" required>
+                        <option value="">Selecione uma Comunidade</option>
+                        {% for comunidade in comunidades %}
+                            <option value="{{ comunidade.id }}">{{ comunidade.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        <button type="submit" class="ui right labeled icon botaoProximo button" onclick="mostrar_conteudo()" disabled>
+            <i class="right arrow icon"></i>
+            Ver Imagens dessa Comunidade
+        </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,90 @@
+<div class="ui modal modalCadUser">
+    <i class="close icon"></i>
+    <div class="header">
+        <i class="ui user default inverted circular icon"></i> Cadastro de Usuário
+    </div>
+    <div class="modalpadrao">
+        <form class="ui form" id="usuario_form" method="post" action="/CadUser/">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            <div class="field">
+                <label>Nome</label>
+                <div class="ui corner labeled input">
+                    {{ form.nome }}
+                    {% if form.nome.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.nome.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Sobrenome</label>
+                <div class="ui corner labeled input">
+                    {{ form.sobrenome }}
+                    {% if form.sobrenome.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.sobrenome.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Data Nascimento</label>
+                <div class="ui corner labeled input">
+                    {{ form.dataNasc }}
+                    {% if form.dataNasc.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.dataNasc.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>E-mail</label>
+                <div class="ui corner labeled input">
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Senha</label>
+                <div class="ui corner labeled input">
+                    {{ form.senha }}
+                    {% if form.senha.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.senha.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+            {% include 'blocos/buttons_form.html' %}
+        </form>
+    </div>
+</div>

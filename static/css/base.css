@@ -51,6 +51,42 @@ footer {
     min-height: 10% !important;
 }
 
+.modalpadrao{
+    margin: 10px;
+}
+
+.botao_inferior{
+
+    margin-top: 50px !important;
+}
+
+.negacao_msg{
+    text-align: center !important;
+}
+
+.campo_pesquisa{
+    width: 145px !important;
+    border-radius: 5px;
+}
+
+.campo_cadastro{
+    /*margin:10px !important;*/
+    width: 300px !important;
+    height: 30px !important;
+    border-radius: 5px;
+}
+.botaoProximo{
+    margin-top: 10px !important;
+}
+.tabelas{
+
+    text-align: center !important;
+}
+
+.card{
+    display: flex;
+    justify-content: center !important;
+}
 /*------------------------------*/
 .issem-dropdown {
     text-align: center !important;

@@ -1,0 +1,89 @@
+{% load widget_tweaks %}
+<div class="ui modal centered row modalFormComunidade">
+    <table class="ui striped celled unstackable table" id="tabela_lista">
+        <thead>
+        <tr>
+            <th class="no-sort" colspan="5">
+                <div class="ui default ribbon large label">Cadastrar Comunidade</div>
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <form class="ui form" action="/Comunidade_Cadastro/" method="post">
+        {% csrf_token %}
+        <div class="modalpadrao">
+            <div class="field">
+                <label>Nome</label>
+                <div class="ui corner labeled input">
+                    {{ form.nome|attr:"required" }}
+                    {% if form.nome.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.nome.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Bairro</label>
+                <div class="ui corner labeled input">
+                    {{ form.bairro|attr:"required" }}
+                    {% if form.bairro.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.bairro.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Cidade</label>
+                <div class="ui corner labeled input">
+                    {{ form.cidade|attr:"required" }}
+                    {% if form.cidade.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.cidade.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Estado</label>
+                <div class="ui corner labeled input">
+                    {{ form.estado|attr:"required" }}
+                    {% if form.estado.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.estado.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="ui slider checkbox">
+                {% if monitorando %}
+                    <input type="checkbox" name="monitorar" checked>
+                {% else %}
+                    <input type="checkbox" name="monitorar">
+                {% endif %}
+                <label>Monitorar</label>
+            </div>
+
+            {% include 'blocos/buttons_form.html' %}
+    </form>
+</div>
+</div>
+
+
+

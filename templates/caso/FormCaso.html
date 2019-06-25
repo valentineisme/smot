@@ -1,109 +1,110 @@
-{% extends 'base.html' %}
-
-{% block body_block %}
-
-    <div class="ui centered row">
-        <div class="ui segment issem-cad">
-            <a  href="{% url 'index' %}"><i class="big arrow circle left icon green"></i></a>
-            <h1> Cadastro Caso </h1>
-            <form class="ui form" action="/CadCaso/" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="fields">
-                    {#começa#}
-                    <div class="five wide field"></div>
-                    <div class="six wide field">
-                        <label>objeto1</label>
-                        {{ form.objeto1 }}
-                        {% if form.objeto1.errors %}
-                            <div class="ui pointing red basic label">
-                                {{ form.objeto1.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    {#termina#}
-                    {#começa#}
-                    <div class="five wide field">
-                        <label>relacao</label>
-                        {{ form.relacao }}
-                        {% if form.relacao.errors %}
-                            <div class="ui pointing red basic label">
-                                {{ form.relacao.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    {#termina#}
-                    <div class="six wide field">
-                        <label>objeto2</label>
-                        {{ form.objeto2 }}
-                        {% if form.objeto2.errors %}
-                            <div class="ui pointing red basic label">
-                                {{ form.objeto2.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    {#termina#}
-                    {#começa#}
-
-                    <div class="four wide field">
-                        <label>distancia</label>
-                        {{ form.distancia }}
-                        {% if form.distancia.errors %}
-                            <div class="ui pointing red basic label">
-                                {{ form.distancia.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    {#termina#}
-                    <div class="five wide field"></div>
+<div class="ui modal centered row modalFormCaso">
+    <table class="ui striped celled unstackable table" id="tabela_lista">
+        <thead>
+        <tr>
+            <th class="no-sort" colspan="5">
+                <div class="ui default ribbon large label">Cadastrar Novo Caso</div>
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <form class="ui form" action="/CadCaso/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="ui modalpadrao">
+            <div class="fields">
+                {#começa#}
+                <div class="five wide field"></div>
+                <div class="six wide field">
+                    <label>objeto1</label>
+                    {{ form.objeto1 }}
+                    {% if form.objeto1.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.objeto1.errors }}
+                        </div>
+                    {% endif %}
                 </div>
-{#            segunda linha#}
-                <div class="fields">
-                    {#começa#}
-                    <div class="five wide field"></div>
-                    <div class="six wide field">
-                        <label>restricao</label>
-                        {{ form.restricao }}
-                        {% if form.restricao.errors %}
-                            <div class="ui pointing red basic label">
-                                {{ form.restricao.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    {#termina#}
-                    {#começa#}
-                    <div class="five wide field">
-                        <label>resultado</label>
-                        {{ form.resultado }}
-                        {% if form.resultado.errors %}
-                            <div class="ui pointing red basic label">
-                                {{ form.resultado.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    {#termina#}
-                    <div class="six wide field">
-                        <label>plano_acao</label>
-                        {{ form.plano_acao }}
-                        {% if form.plano_acao.errors %}
-                            <div class="ui pointing red basic label">
-                                {{ form.plano_acao.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    {#termina#}
-
-                    <div class="five wide field"></div>
+                {#termina#}
+                {#começa#}
+                <div class="five wide field">
+                    <label>relacao</label>
+                    {{ form.relacao }}
+                    {% if form.relacao.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.relacao.errors }}
+                        </div>
+                    {% endif %}
                 </div>
 
+                {#termina#}
+                <div class="six wide field">
+                    <label>objeto2</label>
+                    {{ form.objeto2 }}
+                    {% if form.objeto2.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.objeto2.errors }}
+                        </div>
+                    {% endif %}
+                </div>
 
-                {% include 'blocos/buttons_form.html' %}
-            </form>
-        </div>
-    </div>
+                {#termina#}
+                {#começa#}
 
-{% endblock %}
+                <div class="four wide field">
+                    <label>distancia</label>
+                    {{ form.distancia }}
+                    {% if form.distancia.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.distancia.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                {#termina#}
+                <div class="five wide field"></div>
+            </div>
+            {#            segunda linha#}
+            <div class="fields">
+                {#começa#}
+                <div class="five wide field"></div>
+                <div class="six wide field">
+                    <label>restricao</label>
+                    {{ form.restricao }}
+                    {% if form.restricao.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.restricao.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                {#termina#}
+                {#começa#}
+                <div class="five wide field">
+                    <label>resultado</label>
+                    {{ form.resultado }}
+                    {% if form.resultado.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.resultado.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {#termina#}
+                <div class="six wide field">
+                    <label>plano_acao</label>
+                    {{ form.plano_acao }}
+                    {% if form.plano_acao.errors %}
+                        <div class="ui pointing red basic label">
+                            {{ form.plano_acao.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {#termina#}
+
+                <div class="five wide field"></div>
+            </div>
+
+
+            {% include 'blocos/buttons_form.html' %}
+    </form>
+</div>
+</div>
+</div>

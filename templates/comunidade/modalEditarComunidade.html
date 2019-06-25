@@ -1,0 +1,71 @@
+<div class="ui modal modalEditarComunidade">
+    <i class="close icon"></i>
+    <div class="header">
+        <i class="ui add small teal inverted circular icon"></i> Editar Comunidade
+    </div>
+
+    <form method="POST" action="{% url 'Comunidade_Edit' %}" class="ui content form">
+
+        {% csrf_token %}
+
+        <div class="field">
+            <label>Nome</label>
+
+            <div class="ui corner labeled input">
+                <input type="text" name="nome" id="nome_comu" required>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="field">
+            <label>Bairro</label>
+
+            <div class="ui corner labeled input">
+                <input type="text" name="bairro" id="bairro_comu" required>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="field">
+            <label>Cidade</label>
+
+            <div class="ui corner labeled input">
+                <input type="text" name="cidade" id="cidade_comu" required>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="field">
+            <label>Estado</label>
+
+            <div class="ui corner labeled input">
+                <input type="text" name="estado" id="estado_comu" required>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <input type="hidden" name="comu_id" id="id_comu"/>
+
+        <div class="actions">
+            <div class="ui deny button">
+                Cancelar
+            </div>
+            <input type="submit" class="ui right teal button" value="Editar"/>
+        </input>
+        </div>
+    </form>
+
+
+</div>

@@ -1,0 +1,37 @@
+{% extends 'base_logado.html' %}
+
+{% block body_block %}
+    {% include 'blocos/steps.html' %}
+
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Monitoramento</div>
+                <button class="right floated ui labeled botaoUpload icon button adicionarComu">
+                        <i class="icon add"></i>
+                            Adicione uma nova Comunidade
+                    </button>
+                </th>
+            </tr>
+            </thead>
+        </table>
+
+            <form class="ui form" action="/monitoramento/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                    <select onchange="ativar()" name="comu" id="comu" required="True">
+                        <option value="">Selecione uma Comunidade</option>
+                        {% for comunidade in comunidades %}
+                            <option value="{{ comunidade.id }}">{{ comunidade.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% include 'blocos/avancar_voltar.html' %}
+            </form>
+        </div>
+    </div>
+    {% include 'comunidade/modalComunidade.html' %}
+{% endblock %}

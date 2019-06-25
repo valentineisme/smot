@@ -1,0 +1,92 @@
+{% extends 'base_logado.html' %}
+
+{% block body_block %}
+    {% include 'blocos/steps.html' %}
+
+    <div class="ui centered row">
+        <div class="ui segment issem-cad">
+             <table class="ui striped celled unstackable table" id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Dados do Monitoramento</div>
+                <div class="right floated ui labeled icon button">
+                    <i class="icon hand point right "></i>{{ current_imagem.comunidade.nome }} em {{ current_imagem.dataImagem }}
+                    </div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+            <form class="ui form" action="/Historico/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table class="ui striped celled unstackable table tabelas" id="tabela_lista">
+                    <tr>
+                        <td>Casos</td>
+                        <td>Relação</td>
+                        <td>Distância Permitida {{ restricao }} metros</td>
+                        <td>Resultado</td>
+                        <td>Plano de Ação</td>
+                        <td>Similaridade</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+                                <tr>
+                                    <td>Antigo</td>
+                                </tr>
+                                <tr>
+                                    <td>Novo</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+                                <tr>
+                                    <td>{{ relAntigo }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ relNovo }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+                                <tr>
+                                    <td>{{ dist_antiga }} metros</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ distancia }} metros</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+                                <tr>
+                                    <td rowspan="2">{{ resultado }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+                                <tr>
+                                    <td rowspan="2">{{ plano }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="ui striped celled unstackable table tabelas">
+                                <tr>
+                                    <td rowspan="2">{{ simi }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+        </div>
+        {% include 'blocos/avancar_voltar.html' %}
+        </form>
+    </div>
+    </div>
+
+{% endblock %}
