@@ -36,7 +36,7 @@
 
                                 {% for o in resultado %}
                                     <tr>
-                                        <td><input type="radio" name="resultado" onclick="ativar()" value="{{ o }}">
+                                        <td><input type="radio" readonly="" name="resultado"  onclick="ativar()" value="{{ o }}">
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -121,13 +121,13 @@
                         <a class="ui left labeled icon secundary button cadCaso"><i class="icon add"></i>Se nenhum Caso acima te ajudou, cadastre um Novo Caso</a>
                             <div class="ui right floated pagination secondary menu">
                                 {% if dados.has_previous %}
-                                    <a href="?page={{ dados.previous_page_number }}" class="icon item">
+                                    <a href="?page={{ dados.previous_page_number }}&similar" class="icon item">
                                         <i class="left chevron icon"></i>
                                     </a>
                                 {% endif %}
                                 <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
                                 {% if dados.has_next %}
-                                    <a href="?page={{ dados.next_page_number }}" class="icon item">
+                                    <a href="?page={{ dados.next_page_number }}&similar" class="icon item">
                                         <i class="right chevron icon"></i>
                                     </a>
                                 {% endif %}

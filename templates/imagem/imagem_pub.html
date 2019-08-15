@@ -1,0 +1,50 @@
+{% extends 'base_logado.html' %}
+{% block body_block %}
+
+    <div class="ui segment issem-cad modalpadrao">
+    <form class="ui form">
+        {% csrf_token %}
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Comunidade: {{ comu.nome }}</div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <tbody>
+            <tr>
+                <td>Escolha uma Data:</td>
+                <td>Coordenadas Geográficas:</td>
+            </tr>
+            <tr>
+                <td><input type="date" name="data_imagem" class="campo_cadastro" onchange="imagem_pub();" required></td>
+                <td>
+                    <select onchange="imagem_pub_coor()" name="coor" id="coor" required disabled="True">
+                        <option value=''>Selecione uma Coordenada</option>
+                    </select>
+                </td>
+            </tr>
+            {#                {% if img %}#}
+            </tbody>
+        </table>
+        <article class="ui centered cards" id="div_img">
+            {#         criado por ajax: cards das imagens públicas de outros usuários       #}
+        </article>
+        <input type="hidden" name="comu_id" value="{{ comu.id }}">
+        <table class="ui striped celled unstackable table" id="tabela_lista">
+            <tfoot>
+            <tr>
+                <th colspan="5">
+                    <a href="/Imagem/" class="ui left labeled icon secundary button"><i class="left arrow icon"></i>Voltar</a>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+    </div>
+
+
+{% endblock %}

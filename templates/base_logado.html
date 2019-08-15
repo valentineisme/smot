@@ -7,13 +7,13 @@
 
 <body class="meio_logado">
     <div class="bloco_inicio">
-    {% if user.is_staff %}
-        <div class="menu_lateral">{% include 'menu/menuVertical.html' %}</div>
-    {% else %}
-        <div class="menu_lateral">
-            {% include 'menu/menuVertical.html' %}
-        </div>
-    {% endif %}
+{#    {% if user.is_staff %}#}
+{#        <div class="menu_lateral">{% include 'menu/menuVertical.html' %}</div>#}
+{#    {% else %}#}
+{#        <div class="menu_lateral">#}
+{#            {% include 'menu/menuVertical.html' %}#}
+{#        </div>#}
+{#    {% endif %}#}
         {% block body_block %}
         {% endblock %}
     </div>

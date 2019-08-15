@@ -1,0 +1,65 @@
+{% extends 'base_logado.html' %}
+{% load widget_tweaks %}
+{% block body_block %}
+<div class="ui segment issem-cad modalpadrao">
+    {% csrf_token %}
+    <table class="ui striped celled unstackable table" id="tabela_lista">
+        <thead>
+        <tr>
+            <th class="no-sort" colspan="5">
+                <div class="ui default ribbon large label">Pesquisar Casos</div>
+                {% if user.id %}
+                    <button class="right floated ui labeled botaoUpload icon button cadCaso">
+                        <i class="icon add"></i>
+                            Adicionar Casos
+                    </button>
+                {% endif %}
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <form class="ui form" action="/Casos/" method="post" enctype="multipart/form-data"  onsubmit="valida_form()">
+    {% csrf_token %}
+         <div class="three wide fields tabelas">
+                    <div class="six wide field">
+                        <label>Objeto 1</label>
+                        {{ form.objeto1|attr:"required"}}
+                        {% if form.objeto1.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.objeto1.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="six wide field">
+                        <label>Relação</label>
+                        {{ form.relacao|attr:"required"}}
+                        {% if form.relacao.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.relacao.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="six wide field">
+                        <label>Objeto 2</label>
+                        {{ form.objeto2|attr:"required"}}
+                        {% if form.objeto2.errors %}
+                            <div class="ui pointing red basic label">
+                                {{ form.objeto2.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+         </div>
+    <button type="submit" class="ui right labeled icon botaoProximo button">
+            <i class="right arrow icon"></i>
+            Ver Casos dessa Relação
+        </button>
+    </form>
+</div>
+
+    {% include 'caso/FormCaso.html' %}
+
+{% endblock %}
+

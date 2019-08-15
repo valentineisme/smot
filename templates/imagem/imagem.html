@@ -10,15 +10,22 @@
                     <div class="ui default ribbon large label">Administração de Imagem</div>
                 </th>
             </tr>
+            <tr><td>
+                <div class="ui top attached tabular menu">
+                        <a class="item" data-tab="first">Suas Imagens</a>
+                        <a class="item" data-tab="second">Imagens de Outros Usuários</a>
+                    </div>
+            </td></tr>
             </thead>
         </table>
+        <div class="ui bottom active attached tab segment" data-tab="first">
             <form class="ui form" action="/Imagem_Lista/" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="field">
                     <select onchange="ativar()" name="comu" id="comu" required>
                         <option value="">Selecione uma Comunidade</option>
                         {% for comunidade in comunidades %}
-                            <option value="{{ comunidade.id }}">{{ comunidade.nome }}</option>
+                            <option value="{{ comunidade.id }}">{{ comunidade.nome }} </option>
                         {% endfor %}
                     </select>
                 </div>
@@ -26,7 +33,27 @@
             <i class="right arrow icon"></i>
             Ver Imagens dessa Comunidade
         </button>
+
             </form>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="second">
+        <form class="ui form" action="/Imagem_Publica/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                    <select onchange="ativar()" name="comu" id="comu" required>
+                        <option value="">Selecione uma Comunidade</option>
+                        {% for comunidade in comu_outros %}
+                            <option value="{{ comunidade.id }}">{{ comunidade.nome }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+        <button type="submit" class="ui right labeled icon botaoProximo button" onclick="mostrar_conteudo()" disabled>
+            <i class="right arrow icon"></i>
+            Ver Imagens Públicas
+        </button>
+
+            </form>
+        </div>
         </div>
     </div>
 {% endblock %}

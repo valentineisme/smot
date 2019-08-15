@@ -55,9 +55,17 @@ footer {
     margin: 10px;
 }
 
+#pagingControls ul{display:inline;padding-left:0.5em}
+#pagingControls li{display:inline;padding:0 0.5em}
+
+
 .botao_inferior{
 
     margin-top: 50px !important;
+}
+
+.adm_img{
+    margin-left: 10px !important;
 }
 
 .negacao_msg{

@@ -71,9 +71,11 @@ def validacao(request):
 # comunidade
 @login_required
 def Comunidade(request):
-    ComunidadeList = comunidade.objects.all()
+    current_user = usuario.objects.get(email=request.user)
+    ComunidadeList = comunidade.objects.filter(id_usuario=current_user)
+    ComunidadeOutros = comunidade.objects.filter(permissao='S').exclude(id_usuario=current_user)
     form = ComunidadeForm()
-    paginator = Paginator(ComunidadeList, 7)
+    paginator = Paginator(ComunidadeList, 2)
     page = request.GET.get('page')
     try:
         dados = paginator.page(page)
@@ -81,18 +83,35 @@ def Comunidade(request):
         dados = paginator.page(1)
     except EmptyPage:
         dados = paginator.page(paginator.num_pages)
-    return render(request, 'comunidade/comunidade.html', {"dados": dados, "form": form})
+
+    paginator = Paginator(ComunidadeOutros, 2)
+    page = request.GET.get('page')
+    try:
+        dadosOutros = paginator.page(page)
+    except PageNotAnInteger:
+        dadosOutros = paginator.page(1)
+    except EmptyPage:
+        dadosOutros = paginator.page(paginator.num_pages)
+    return render(request, 'comunidade/comunidade.html', {"outros":dadosOutros, "dados": dados, "form": form})
 
 
 @login_required
 def Comunidade_Cadastro(request):
     if request.POST:
         form = ComunidadeForm(request.POST)
-
+        current_user = usuario.objects.get(email=request.user)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            id_comunidade = post.id
+            comu = comunidade()
+            comu.nome = request.POST['nome']
+            comu.bairro = request.POST['bairro']
+            comu.cidade = request.POST['cidade']
+            comu.estado = request.POST['estado']
+            comu.id_usuario = current_user
+            # post = form.save(commit=False)
+            # post.id_usuario = current_user
+            # post.id_usuario = request.user.id
+            comu.save()
+            id_comunidade = comu.id
             print(id_comunidade)
             if request.POST.get('monitorar'):
                 return HttpResponseRedirect('/monitoramento/' + str(id_comunidade))
@@ -102,7 +121,7 @@ def Comunidade_Cadastro(request):
             print(form.errors)
             return render(request, 'comunidade/comunidade.html', {'form': form, 'method': 'post'})
     else:
-        return index(request);
+        return index(request)
 
 
 @login_required
@@ -136,13 +155,69 @@ def Comunidade_Excluir(request, comu_id=None):
         comu.delete()
     return redirect('Comunidade')
 
+@login_required
+def Comunidade_Permitir(request, comu_id=None):
+    comu = comunidade.objects.get(pk=comu_id)
+    if comu.id != None:
+        if comu.permissao == "S":
+            comu.permissao = "N"
+        elif comu.permissao == "N":
+            comu.permissao = "S"
+        comu.save()
+    return redirect('Comunidade')
+
+@login_required
+def Comunidade_Utilizar(request, comu_id=None):
+    comu = comunidade.objects.get(pk = comu_id)
+    current_user = usuario.objects.get(email=request.user)
+    if comu.id != None:
+        c = comunidade()
+        c.nome = comu.nome
+        c.estado = comu.estado
+        c.cidade = comu.cidade
+        c.bairro = comu.bairro
+        c.id_usuario = current_user
+        c.save()
+    return redirect('Comunidade')
+
 
 # imagem
 @login_required
 def Imagem(request, id_comunidade=None):
     form = ImagemForm()
-    comunidades = comunidade.objects.all()
-    return render(request, 'imagem/imagem.html', {'form': form, 'comunidades': comunidades})
+    current_user = usuario.objects.get(email=request.user)
+    comunidades = comunidade.objects.filter(id_usuario=current_user)
+    ComunidadeOutros = comunidade.objects.filter(permissao='S').exclude(id_usuario=current_user)
+    # imagem = imagem.objects.filter()
+    return render(request, 'imagem/imagem.html', {'form': form, 'comunidades': comunidades, 'comu_outros': ComunidadeOutros})
+
+@login_required
+def Imagem_Publica(request, comu_id=None):
+    current_user = usuario.objects.get(email=request.user)
+    if request.POST.get('comu'):
+        comu = comunidade.objects.get(id=request.POST.get('comu'))
+        return render(request, 'imagem/imagem_pub.html',
+                      {'comu': comu})
+    if request.GET.get('dataImagem'):
+        dataImagem = request.GET.get('dataImagem')
+        comu = request.GET.get('comu')
+        current_comu = comunidade.objects.get(pk = comu)
+        img = imagem.objects.filter(dataImagem=dataImagem, permissao='S', comunidade = current_comu)
+        if img != None:
+            json = serializers.serialize("json", img)
+            return HttpResponse(json)
+        else:
+            return redirect('Imagem_Publica')
+    if request.GET.get('img'):
+        pkimagem = request.GET.get('img')
+        img = imagem.objects.filter(pk=pkimagem, permissao='S')
+        if img != None:
+            json = serializers.serialize("json", img)
+            return HttpResponse(json)
+        # imagens = imagem.objects.filter(dataImagem=request.GET.get('data_imagem'))
+        # imagens = imagem.objects.filter(comunidade = comu)
+        # return render(request, 'imagem/imagem_pub.html',
+        #               {'comuna': comu, 'dataImagem': dataImagem})
 
 
 @login_required
@@ -197,12 +272,86 @@ def Imagem_Excluir(request, img_id=None, comu_id=None):
         im.delete()
     return redirect('/Imagem_Lista/' + comu_id + '/')
 
+@login_required
+def Imagem_Permitir(request, comu_id = None, img_id=None):
+    img = imagem.objects.get(pk=img_id)
+    comu = comunidade.objects.get(pk=img.comunidade.pk)
+    if img.id != None:
+        if img.permissao == "S":
+            img.permissao = "N"
+        elif img.permissao == "N":
+            img.permissao = "S"
+            if img.comunidade.permissao == "N":
+                comu.permissao = "S"
+                comu.save()
+        img.save()
+        comu_id = int(img.comunidade.id)
+    return redirect('/Imagem_Lista/' + str(comu_id) + '/')
+
+@login_required
+def Imagem_Edit(request):
+    if request.POST['img_id']:
+        img_id = request.POST['img_id']
+        img = imagem.objects.get(pk=img_id)
+        if img.id != None:
+            img.dataImagem = request.POST['imagemData']
+            img.latitude = request.POST['lati']
+            img.longitude = request.POST['longi']
+            img.save()
+        return redirect('/Imagem_Lista/' + str(img.comunidade.id) + '/')
+
+
+@login_required
+def Imagem_Edit_Campos(request):
+    if request.GET['img']:
+        img_id = request.GET['img']
+        img = imagem.objects.filter(id=img_id)
+        json = serializers.serialize("json", img)
+        return HttpResponse(json)
 
 # caso
 @login_required
-def FormCaso(request):
+def Casos(request):
     form = CasoForm()
-    return render(request, 'FormCaso.html', {'form': form})
+    if request.POST.get('objeto1') or request.GET:
+        if request.GET:
+            objeto1 = request.GET.get('ob1')
+            relac = request.GET.get('rel')
+            objeto2 = request.GET.get('ob2')
+        elif request.POST:
+            form = CasoForm(request.POST)
+            objeto1 = request.POST.get('objeto1')
+            relac = request.POST.get('relacao')
+            objeto2 = request.POST.get('objeto2')
+
+        ob1 = objeto.objects.get(id=objeto1)
+        rela = relacao.objects.get(id=relac)
+        ob2 = objeto.objects.get(id=objeto2)
+
+        rel = ob1.nome+" "+rela.nome+" "+ob2.nome
+        current_casos = casos.objects.filter(objeto1=objeto1, relacao=relac, objeto2 = objeto2)
+        current_casos1 = casos.objects.filter(objeto1=objeto2, relacao=relac, objeto2 = objeto1)
+
+        if current_casos:
+            current_casos1 = current_casos
+
+        paginator = Paginator(current_casos1, 3)
+        page = request.GET.get('page')
+        try:
+            dados = paginator.page(page)
+        except PageNotAnInteger:
+            dados = paginator.page(1)
+        except EmptyPage:
+            dados = paginator.page(paginator.num_pages)
+        return render(request, 'caso/casoLista.html', {'form':form, 'dados': dados, 'rel':rel})
+    return render(request, 'caso/caso.html', {'form': form})
+
+@login_required
+def Casos_Excluir(request, caso_id=None, ob1_id = None, rel_id=None, ob2_id = None):
+    c = casos.objects.get(id = caso_id)
+    if c.id != None:
+        c.delete()
+    return redirect('/Casos/?ob1='+str(ob1_id)+'&rel='+str(rel_id)+'&ob2='+str(ob2_id)+'&deletado')
 
 
 @login_required
@@ -217,22 +366,41 @@ def CadCaso(request):
             post.id_usuario = current_user
 
             post.save()
-            return render(request, 'index.html')
+            if request.POST.get('monitorar'):
+                return resultadoCaso(request)
+            return Casos(request)
         else:
             print(form.errors)
-        return render(request, 'FormCaso.html', {'form': form, 'method': 'post'})
-
+        return redirect('/Casos/')
 
 @login_required
-def BuscarCaso(request, id_imagem=None):
-    if id_imagem:
-        id_imagem = id_imagem
-    else:
-        id_imagem = 5
-    form = BuscarCasoForm()
-    form.id_imagem = id_imagem
-    return render(request, 'BuscarCaso.html', {'form': form, 'id_imagem': id_imagem})
+def Caso_Edit_Campos(request):
+    if request.GET['caso']:
+        caso_id = request.GET['caso']
+        c = casos.objects.filter(id=caso_id)
+        json = serializers.serialize("json", c)
+        return HttpResponse(json)
 
+@login_required
+def Caso_Edit(request):
+    if request.POST['caso_id']:
+        caso_id = request.POST['caso_id']
+        c = casos.objects.get(pk=caso_id)
+        ob1 = objeto.objects.get(pk=request.POST['objeto1'])
+        rel = relacao.objects.get(pk=request.POST['relacao'])
+        ob2 = objeto.objects.get(pk=request.POST['objeto2'])
+        rest = restricao.objects.get(pk=request.POST['restricao'])
+        form = CasoForm(request.POST)
+        if form.is_valid():
+            c.objeto1 = ob1
+            c.relacao = rel
+            c.objeto2 = ob2
+            c.distancia = request.POST['distancia']
+            c.restricao = rest
+            c.resultado = request.POST['resultado']
+            c.plano_acao = request.POST['plano_acao']
+            c.save()
+        return Casos(request)
 
 @login_required
 def resultadoCaso(request):
@@ -252,7 +420,7 @@ def resultadoCaso(request):
     peso = [0.8, 0.4, 0.8]
     resultado = []
     step = 4
-    form = CasoForm();
+    form = CasoForm(request.POST)
     antigo = []
     similar = []
     o1 = []
@@ -262,6 +430,7 @@ def resultadoCaso(request):
     novo = ''
     plano = []
     cor = []
+    monitoramento = True
 
     def EhIgual(x, y):
         if (x == y):
@@ -323,7 +492,7 @@ def resultadoCaso(request):
     # except EmptyPage:
     #     dados = paginator.page(paginator.num_pages)
     return render(request, 'monitoramento/monitoramento_casos_similares.html',
-                  {"novo": novo, "metros": metros, "cor": cor, "plano": plano, "o1": o1, "relac": relac, "o2": o2,
+                  {"monitorando":monitoramento, "novo": novo, "metros": metros, "cor": cor, "plano": plano, "o1": o1, "relac": relac, "o2": o2,
                    "step": step, "resultado": resultado, "id_comu": current_imagem.comunidade.id, "current_imagem":current_imagem, "id_imagem": id_imagem, 'form': form, 'antigo': antigo,
                    'similaridade': similar})
 
@@ -380,7 +549,7 @@ def monitoramento(request, id_comunidade=None):
         form = BuscarCasoForm()
         return render(request, 'monitoramento/monitoramento_caso.html',
                       {'step': step, 'form': form, 'imagem': im, 'comunidade': id_comu})
-    elif request.POST.get("caso_inserido"):
+    elif request.POST.get("caso_inserido") or request.GET.get("similar"):
         return resultadoCaso(request)
     elif request.POST.get("caso_selecionado"):
         return cadHistorico(request)

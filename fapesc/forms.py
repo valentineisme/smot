@@ -29,6 +29,7 @@ class ComunidadeForm(forms.ModelForm):
     class Meta:
         model = comunidade
         fields = '__all__'
+        exclude = ('id_usuario','permissao')
 
 class ImagemForm(forms.ModelForm):
     img = forms.ImageField()
@@ -53,6 +54,18 @@ class BuscarCasoForm(forms.ModelForm):
         model = casos
         fields = '__all__'
         exclude = ('id_usuario', 'restricao', 'resultado', 'plano_acao')
+        widgets = {
+            'field_one': forms.TextInput(attrs={'id': 'objeto1'}),
+            'field_two': forms.TextInput(attrs={'id': 'relacao'}),
+            'field_three': forms.TextInput(attrs={'id': 'objeto2'}),
+            'field_four': forms.TextInput(attrs={'id': 'distancia'})
+        }
+
+class BuscarCaso(forms.ModelForm):
+    class Meta:
+        model = casos
+        fields = '__all__'
+        exclude = ('id_usuario', 'restricao', 'resultado', 'plano_acao', 'distancia')
         widgets = {
             'field_one': forms.TextInput(attrs={'id': 'objeto1'}),
             'field_two': forms.TextInput(attrs={'id': 'relacao'}),

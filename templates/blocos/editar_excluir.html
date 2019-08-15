@@ -1,9 +1,18 @@
-<div class="ui two bottom attached buttons botao_inferior">
-    <button class="ui left labeled icon secundary botaoProximo editarImagem button">
-        <i class="ui write grey large icon"></i>
+<div class="ui three bottom attached buttons botao_inferior">
+    <button class="ui editarImagem button  ui-tooltip" data-tooltip="Editar" onclick="imagem_editar({{ dado.id }});">
+        <i class="ui write black large icon adm_img"></i>
     </button>
-    <button type="submit" class="ui right labeled icon botaoProximo ExcluirImagem button" onclick="imagem_excluir({{ dado.id }},{{ comunidade.id }});" >
-    <i class="ui trash red large icon"></i>
+    {% if dado.permissao == "S" %}
+        <button type="submit" class="ui PermitirImagem button  ui-tooltip" data-tooltip="Tornar Privado" onclick="permitir({{ dado.id }});" >
+        <i class="ui eye green large icon adm_img"></i>
+    {% else %}
+        <button type="submit" class="ui PermitirImagem button  ui-tooltip" data-tooltip="Permitir" onclick="permitir({{ dado.id }});" >
+        <i class="ui eye slash outline large icon adm_img"></i>
+    {% endif %}
+    </button>
+    <button type="submit" class="ui ExcluirImagem button ui-tooltip" data-tooltip="Excluir" onclick="imagem_excluir({{ dado.id }},{{ comunidade.id }});" >
+    <i class="ui trash red large icon adm_img"></i>
     </button>
     {% include "imagem/modalExcluirImagem.html" %}
+    {% include 'imagem/modalEditarImagem.html' %}
 </div>

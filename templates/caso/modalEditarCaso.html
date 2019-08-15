@@ -1,24 +1,23 @@
 {% load widget_tweaks %}
-<div class="ui modal centered row modalFormCaso">
+<div class="ui modal centered row modalEditarCaso">
     <table class="ui striped celled unstackable table" id="tabela_lista">
         <thead>
         <tr>
             <th class="no-sort" colspan="5">
-                <div class="ui default ribbon large label">Cadastrar Novo Caso</div>
+                <div class="ui default ribbon large label">Editar Caso</div>
             </th>
         </tr>
         </thead>
     </table>
-    <form class="ui form" action="/CadCaso/" method="post" enctype="multipart/form-data">
+    <form class="ui form" action="{% url 'Caso_Edit' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="hidden" name="caso_inserido" value="{{ current_imagem.id }}">
         <div class="ui modalpadrao">
             <div class="fields">
                 {#começa#}
                 <div class="five wide field"></div>
                 <div class="six wide field">
                     <label>Objeto 1</label>
-                    {{ form.objeto1|attr:"required" }}
+                    {{ form.objeto1|attr:"required"  }}
 
                 </div>
                 {#termina#}
@@ -69,18 +68,14 @@
 
                 <div class="five wide field"></div>
             </div>
-            <div class="field">
-                <div class="ui centered grid">
-                    <div class="ui slider checkbox">
-                        {% if monitorando %}
-                            <input type="checkbox" name="monitorar" checked>
-                        <label>Monitorar</label>
-                        {% endif %}
-                    </div>
-                </div>
+            <input type="hidden" name="caso_id" id="caso_id"/>
+            <div class="actions">
+            <input type="submit" class="ui right teal button" value="Editar"/>
+                <div class="ui deny button">
+                Cancelar
             </div>
-
-            {% include 'blocos/buttons_form.html' %}
+        </input>
+        </div>
     </form>
 </div>
 </div>

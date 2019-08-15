@@ -6,7 +6,7 @@
      <div class="ui header">Sistema de Monitoramento de Ocupação Territorial</div>
         {% if user.is_anonymous %}
             <button class="ui white large button botaoFacaParte cadastrarUsuario">Faça Parte!</button>
-            <button class="ui white large button botaoFacaParte verHistorico">Veja Comunidades Monitoradas</button>
+{#            <button class="ui white large button botaoFacaParte verHistorico">Veja Comunidades Monitoradas</button>#}
         {% else %}
             <a class="item" href="{% url 'monitoramento' %}"><button class="ui white large button botaoFacaParte cadastro">Faça Monitoramento</button></a>
             <a class="item" href="{% url 'Historico' %}"><button class="ui white large button botaoFacaParte verHistorico">Veja Históricos</button></a>
@@ -16,7 +16,7 @@
 
 
     {% include 'cadastro_usuario/modalCadUser.html' %}
-    {% include 'comunidade/listaComunidade.html' %}
+{#    {% include 'comunidade/listaComunidade.html' %}#}
     {% include 'blocos/sobre.html' %}
 {% endblock %}
 

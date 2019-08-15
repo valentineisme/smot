@@ -1,0 +1,35 @@
+<div class="ui modal modalEditarImagem">
+    <div class="ui segment issem-cad modalpadrao">
+        <form method="POST" action="{% url 'Imagem_Edit' %}" class="ui content form">
+            {% csrf_token %}
+            <div class="header">
+                <i class="ui book default inverted circular icon"></i> Editar Imagens
+            </div>
+            <table class="ui center aligned table">
+                <tr>
+
+                    <td>Comunidade</td>
+                    <td>Data</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select disabled>
+                            <option value="{{ dado.comunidade.id }}">{{ dado.comunidade.nome }}</option>
+                        </select>
+                    </td>
+                    <td><input type="date" id="data_img" name="imagemData" class="campo_cadastro" required></td>
+                </tr>
+                <tr>
+                    <td>Latitude</td>
+                    <td>Longitude</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="lati_img" name="lati" class="campo_cadastro" required></td>
+                    <td><input type="text" id="longi_img" name="longi" class="campo_cadastro" required></td>
+                </tr>
+            </table>
+            <input type="hidden" name="img_id" id="id_imagem"/>
+            {% include "blocos/buttons_form.html" %}
+        </form>
+    </div>
+</div>

@@ -83,6 +83,9 @@ class comunidade(models.Model):
     bairro = models.CharField(max_length=128)
     cidade = models.CharField(max_length=128)
     estado = models.CharField(max_length=128)
+    id_usuario = models.ForeignKey(usuario, on_delete=models.CASCADE, null=True)
+    permissao = models.CharField(max_length=128, default='N')
+
     class Meta:
         verbose_name = 'Comunidade'
         verbose_name_plural = 'Comunidades'
@@ -98,6 +101,7 @@ class imagem(models.Model):
     latitude = models.CharField(max_length=128)
     longitude = models.CharField(max_length=128)
     comunidade = models.ForeignKey(comunidade, on_delete=models.CASCADE)
+    permissao = models.CharField(max_length=128, default='N')
 
 
     class Meta:
@@ -118,7 +122,6 @@ class historico(models.Model):
     resultado = models.CharField(max_length=128)
     plano_acao = models.CharField(max_length=128)
 
-
     class Meta:
      verbose_name = 'Historico'
      verbose_name_plural = 'Historico'
@@ -136,6 +139,7 @@ class casos(models.Model):
     restricao = models.ForeignKey(restricao, on_delete=models.CASCADE)
     resultado = models.CharField(max_length=128)
     plano_acao = models.CharField(max_length=128)
+    permissao = models.CharField(max_length=128, default='S')
 
     class Meta:
         verbose_name = 'Caso'

@@ -2,7 +2,7 @@
 <nav class="ui huge borderless inverted menu large grid" id="topo">
     {% if user.is_anonymous %}
         <a class="item" href="/">
-            <img src="{% static  'images/soloologo.png' %}" id="logo"> SMOT
+            <img src="#" id="logo"> SMOT
         </a>
         <div class="right menu">
             <a class="item logar">
@@ -12,11 +12,11 @@
         </div>
     {% else %}
         <a class="item" href="/">
-            <img src="{% static  'images/soloologo.png' %}" id="logo"> SMOT
+            <img src="#" id="logo"> SMOT
         </a>
-        {% if user.is_staff %}
+{#        {% if user.is_staff %}#}
             {% include 'menu/menuLogado.html' %}
-        {% endif %}
+{#        {% endif %}#}
         <div class="right menu">
             <a class="item acessarConta"> Usuário: {{ request.user }} </a>
             <a class="item acessarConta" href="{% url 'sair' %}">

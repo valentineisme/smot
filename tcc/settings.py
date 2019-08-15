@@ -10,10 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+import os, sys, importlib
+importlib.reload(sys)
+# sys.setdefaultencoding('utf8')
 
 BASE_DIR = (os.path.dirname(os.path.dirname(__file__)))
 
@@ -53,7 +52,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

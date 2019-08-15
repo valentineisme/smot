@@ -41,7 +41,11 @@
                         {% endfor %}
                     {% else %}
                         <div class="ui three column grid">
-                            sem histórico dessa comunidade nessa data
+                            <div class="ui negative message">
+                                <p>Sem histórico dessa comunidade nessa data</p>
+                            </div>
+                            <a href="/monitoramento/?idcomu={{ imagem.comunidade.id }}&idimagem={{ imagem.id }}" class="ui left labeled icon secundary button cadCaso"><i
+                                    class="icon add"></i>Monitorar</a>
                         </div>
                     {% endif %}
 

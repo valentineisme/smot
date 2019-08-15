@@ -1,82 +1,169 @@
 {% extends 'base_logado.html' %}
 {% block body_block %}
-<div class="ui segment issem-cad modalpadrao">
-    {% csrf_token %}
-    <table class="ui striped celled unstackable table" id="tabela_lista">
-        <thead>
-        <tr>
-            <th class="no-sort" colspan="5">
-                <div class="ui default ribbon large label">Lista de Comunidades</div>
-                <input class="campo_pesquisa" id="filtro_pesquisa" placeholder="pesquisar comunidade"/>
-                {% if user.id %}
-                    <button class="right floated ui labeled botaoUpload icon button adicionarComu">
-                        <i class="icon add"></i>
-                            Adicionar Comunidade
-                    </button>
-                {% endif %}
-            </th>
+    <div class="ui segment issem-cad modalpadrao">
+        {% csrf_token %}
+        <table class="ui striped celled unstackable table " id="tabela_lista">
+            <thead>
+            <tr>
+                <th class="no-sort" colspan="5">
+                    <div class="ui default ribbon large label">Lista de Comunidades</div>
 
-        </tr>
-        <tr>
-            <th>Nome</th>
-            {% if user.id %}
-                <th class="collapsing center aligned" colspan="2">Ações</th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% if dados %}
-            {% for dado in dados %}
-                <tr>
-                    <td>
-                        <a class="item" href="{% url 'monitoramento' dado.id %}">{{ dado.nome }}</a>
-                    </td>
                     {% if user.id %}
-                        <td class="collapsing center aligned">
-                            <input type="hidden" id="{{ dado.id }}" value="{{ dado.nome }}"/>
-                            <a class="cursorPointer editarComu" onclick="comu_editar({{ dado.id }});">
-                                <i class="ui write grey large icon"></i>
-                            </a>
-                        </td>
-                        <td class="collapsing center aligned">
-                            <a class="cursorPointer excluirComu" onclick="comu_excluir({{ dado.id }});">
-                                <i class="ui trash red large icon"></i>
-                            </a>
-                        </td>
+                        <button class="right floated ui labeled botaoUpload icon button adicionarComu">
+                            <i class="icon add"></i>
+                            Adicionar Comunidade
+                        </button>
+                    {% endif %}
+                </th>
+            </tr>
+            <tr>
+                <th colspan="5">
+                    <div class="ui top attached tabular menu">
+                        <a class="item" data-tab="first">Suas Comunidades</a>
+                        <a class="item" data-tab="second">Comunidades de Outros Usuários</a>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <div class="ui bottom active attached tab segment" data-tab="first">
+            <table class="ui striped celled unstackable table" id="tabela_lista1">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>
+                        <input class="campo_pesquisa" id="filtro_pesquisa" placeholder="pesquisar comunidade"/>
+                        obs. apenas letras minúsculas
+                    </th>
+                    {% if user.id %}
+                        <th class="collapsing center aligned" colspan="3">Ações</th>
                     {% endif %}
                 </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td>Não há dados cadastrados.</td>
-            </tr>
-        {% endif %}
-        </tbody>
-        <tfoot>
-        <tr>
-            <th colspan="5">
-                <div class="ui right floated pagination secondary menu">
-                    {% if dados.has_previous %}
-                        <a href="?page={{ dados.previous_page_number }}" class="icon item">
-                            <i class="left chevron icon"></i>
-                        </a>
+                </thead>
+                <tbody>
+                {% if dados %}
+                    {% for dado in dados %}
+                        <tr>
+                            <td colspan="2">
+                                <a class="item" href="{% url 'monitoramento' dado.id %}">{{ dado.nome }}</a>
+                            </td>
+                            {% if user.id %}
+                                <td class="collapsing center aligned ui-tooltip" data-tooltip="Editar">
+                                    <input type="hidden" id="{{ dado.id }}" value="{{ dado.nome }}"/>
+                                    <a class="cursorPointer editarComu" onclick="comu_editar({{ dado.id }});">
+                                        <i class="ui write grey large icon"></i>
+                                    </a>
+                                </td>
+                                <td class="collapsing center aligned ui-tooltip" data-tooltip="Excluir">
+                                    <a class="cursorPointer excluirComu" onclick="comu_excluir({{ dado.id }});">
+                                        <i class="ui trash red large icon"></i>
+                                    </a>
+                                </td>
+                                <td class="collapsing center aligned ui-tooltip" data-tooltip="Permissão" onclick="permitir({{ dado.id }});" >
+                                    {% if dado.permissao == "S" %}
+                                        <i class="ui eye green large icon permitirComu "></i>
+                                    {% else %}
+                                        <i class="ui eye slash outline large icon permitirComu"></i>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td>Não há dados cadastrados.</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="5">
+                        <div class="ui right floated pagination secondary menu">
+                            {% if dados.has_previous %}
+                                <a href="?page={{ dados.previous_page_number }}" class="icon item">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                            {% endif %}
+                            <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                            {% if dados.has_next %}
+                                <a href="?page={{ dados.next_page_number }}" class="icon item">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="second">
+            <table class="ui striped celled unstackable table" id="tabela_lista2">
+                <thead>
+                <tr>
+                    <th>Comunidade</th>
+                    <th>
+                        <input class="campo_pesquisa" id="filtro_pesquisa2" placeholder="pesquisar comunidade"/>
+                        obs. apenas letras minúsculas
+                    </th>
+                    {% if user.id %}
+                        <th class="collapsing center aligned" colspan="">Usuário</th>
+                        <th class="collapsing center aligned" colspan="">Ação</th>
                     {% endif %}
-                    <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
-                    {% if dados.has_next %}
-                        <a href="?page={{ dados.next_page_number }}" class="icon item">
-                            <i class="right chevron icon"></i>
-                        </a>
-                    {% endif %}
-                </div>
-            </th>
-        </tr>
-        </tfoot>
-    </table>
-</div>
+                </tr>
+                </thead>
+                <tbody>
+                {% if outros %}
+                    {% for dado in outros %}
+                        <tr>
+                            <td colspan="2">
+                                <a class="item" href="#">{{ dado.nome }} - {{ dado.bairro }} - {{ dado.cidade }} - {{ dado.estado }}</a>
+                            </td>
+                            {% if user.id %}
+                                <td class="collapsing center aligned">
+                                    {{ dado.id_usuario.nome }}
+                                </td>
+                                <td class="collapsing center aligned ui-tooltip" data-tooltip="Utilizar">
+                                    <a class="cursorPointer utilizarComu" onclick="utilizar({{ dado.id }});">
+                                        <i class="ui download green large icon"></i>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td>Não há dados cadastrados.</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="5">
+                        <div class="ui right floated pagination secondary menu">
+                            {% if outros.has_previous %}
+                                <a href="?page={{ outros.previous_page_number }}" class="icon item">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                            {% endif %}
+                            <a class="item">Página {{ outros.number }} de {{ outros.paginator.num_pages }}</a>
+                            {% if outros.has_next %}
+                                <a href="?page={{ outros.next_page_number }}" class="icon item">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 
     {% include 'comunidade/modalComunidade.html' %}
     {% include 'comunidade/modalEditarComunidade.html' %}
     {% include 'comunidade/modalExcluirComunidade.html' %}
+    {% include 'comunidade/../blocos/modalPermitir.html' %}
+    {% include 'comunidade/../blocos/modalUtilizar.html' %}
 
 {% endblock %}
 
