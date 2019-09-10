@@ -46,14 +46,14 @@ class CasoForm(forms.ModelForm):
     class Meta:
         model = casos
         fields = '__all__'
-        exclude = ('id_usuario',)
+        exclude = ('id_usuario','permissao')
 
 
 class BuscarCasoForm(forms.ModelForm):
     class Meta:
         model = casos
         fields = '__all__'
-        exclude = ('id_usuario', 'restricao', 'resultado', 'plano_acao')
+        exclude = ('id_usuario', 'restricao', 'resultado', 'plano_acao', 'permissao')
         widgets = {
             'field_one': forms.TextInput(attrs={'id': 'objeto1'}),
             'field_two': forms.TextInput(attrs={'id': 'relacao'}),

@@ -42,6 +42,7 @@
                             <td class="collapsing center aligned">
                                 <input type="hidden" id="{{ dado.id }}" value="{{ dado.nome }}"/>
                                 <a class="cursorPointer editarCaso" onclick="caso_editar({{ dado.id }});">
+                                        {% include 'caso/modalEditarCaso.html' %}
                                     <i class="ui write grey large icon"></i>
                                 </a>
                             </td>
@@ -74,13 +75,13 @@
                     <a href="/Casos/" class="ui left labeled icon secundary button"><i class="left arrow icon"></i>Voltar</a>
                     <div class="ui right floated pagination secondary menu">
                         {% if dados.has_previous %}
-                            <a href="?page={{ dados.previous_page_number }}" class="icon item">
+                            <a href="?page={{ dados.previous_page_number }}&ob1={{ ob1 }}&ob2={{ ob2 }}&rel={{ rela }}" class="icon item">
                                 <i class="left chevron icon"></i>
                             </a>
                         {% endif %}
                         <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
                         {% if dados.has_next %}
-                            <a href="?page={{ dados.next_page_number }}" class="icon item">
+                            <a href="?page={{ dados.next_page_number }}&ob1={{ ob1 }}&ob2={{ ob2 }}&rel={{ rela }}" class="icon item">
                                 <i class="right chevron icon"></i>
                             </a>
                         {% endif %}
@@ -92,7 +93,6 @@
     </div>
     {% include 'caso/FormCaso.html' %}
     {% include 'caso/modalExcluirCaso.html' %}
-    {% include 'caso/modalEditarCaso.html' %}
 
 
 {% endblock %}

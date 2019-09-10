@@ -16,59 +16,37 @@
                 {#começa#}
                 <div class="five wide field"></div>
                 <div class="six wide field">
-                    <label>Objeto 1</label>
-                    {{ form.objeto1|attr:"required"  }}
-
-                </div>
-                {#termina#}
-                {#começa#}
-                <div class="five wide field">
                     <label>Relação</label>
-                    {{ form.relacao|attr:"required" }}
+{#                    {{ form.objeto1|attr:"required"  }}#}
+                        {{ rel }}
                 </div>
-
-                {#termina#}
-                <div class="six wide field">
-                    <label>Objeto 2</label>
-                    {{ form.objeto2|attr:"required" }}
-                </div>
-
-                {#termina#}
-                {#começa#}
-
                 <div class="four wide field">
                     <label>Distância</label>
                     {{ form.distancia|attr:"required"|attr:"autofocus" }}
                 </div>
-                {#termina#}
                 <div class="five wide field"></div>
             </div>
-            {#            segunda linha#}
             <div class="fields">
-                {#começa#}
                 <div class="five wide field"></div>
                 <div class="six wide field">
                     <label>Restrição</label>
-                    {{ form.restricao|attr:"required" }}
+                    {{ dado.restricao }}
                 </div>
-                {#termina#}
-                {#começa#}
                 <div class="five wide field">
                     <label>Resultados</label>
                     {{ form.resultado|attr:"required" }}
                 </div>
-
-                {#termina#}
                 <div class="six wide field">
                     <label>Plano de Ação</label>
                     {{ form.plano_acao|attr:"required" }}
                 </div>
-
-                {#termina#}
-
                 <div class="five wide field"></div>
             </div>
             <input type="hidden" name="caso_id" id="caso_id"/>
+            <input type="hidden" name="ob1" id="ob1"/>
+            <input type="hidden" name="rel" id="rel"/>
+            <input type="hidden" name="restri" id="restri"/>
+            <input type="hidden" name="ob2" id="ob2"/>
             <div class="actions">
             <input type="submit" class="ui right teal button" value="Editar"/>
                 <div class="ui deny button">

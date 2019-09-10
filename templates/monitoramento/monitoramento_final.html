@@ -24,7 +24,6 @@
                         <td>Casos</td>
                         <td>Relação</td>
                         <td>Distância Permitida {{ restricao }} metros</td>
-                        <td>Resultado</td>
                         <td>Plano de Ação</td>
                         <td>Similaridade</td>
                     </tr>
@@ -62,21 +61,30 @@
                         <td>
                             <table class="ui striped celled unstackable table tabelas">
                                 <tr>
-                                    <td rowspan="2">{{ resultado }}</td>
+                                    <td rowspan="2">
+                                        {% if resultado == "Vermelho" %}
+                                            <font color="red">{{ plano }}</font>
+                                        {% elif resultado == "Verde" %}
+                                            <font color="green">{{ plano }}</font>
+                                        {% else %}
+                                            <font color="#b8860b">{{ plano }}</font>
+                                        {% endif %}
+
+                                    </td>
                                 </tr>
                             </table>
                         </td>
+{#                        <td>#}
+{#                            <table class="ui striped celled unstackable table tabelas">#}
+{#                                <tr>#}
+{#                                    <td rowspan="2">{{ plano }}</td>#}
+{#                                </tr>#}
+{#                            </table>#}
+{#                        </td>#}
                         <td>
                             <table class="ui striped celled unstackable table tabelas">
                                 <tr>
-                                    <td rowspan="2">{{ plano }}</td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            <table class="ui striped celled unstackable table tabelas">
-                                <tr>
-                                    <td rowspan="2">{{ simi }}</td>
+                                    <td rowspan="2">{{ simi }} %</td>
                                 </tr>
                             </table>
                         </td>

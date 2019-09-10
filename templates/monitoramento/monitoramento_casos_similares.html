@@ -21,13 +21,13 @@
             <form class="ui form" action="/monitoramento/" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" name="caso_selecionado" value="{{ id_imagem }}">
+                <div style="overflow: auto; width: 100%; height: 300px;">
                 <table class="ui striped celled unstackable table tabelas" id="tabela_lista">
                     <tr>
                         <td>-</td>
                         <td colspan="3">Relação</td>
                         <td>Distância</td>
                         <td>Plano de Ação</td>
-                        <td>Resultado</td>
                         <td>Similaridade</td>
                     </tr>
                     <tr>
@@ -87,51 +87,69 @@
                                 </tr>
                                 {% for p in plano %}
                                     <tr>
-                                        <td>{{ p }}</td>
+                                        <td>
+                                        {% if p == "Retirar" %}
+                                            <font color="red">{{ p }}</font>
+                                        {% elif p == "Okay" %}
+                                            <font color="green">{{ p }}</font>
+                                        {% else %}
+                                            <font color="#b8860b">{{ p }}</font>
+                                        {% endif %}
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </table>
                         </td>
-                        <td>
-                            <table class="ui striped celled unstackable table tabelas">
-
-                                {% for c in cor %}
-                                    <tr>
-                                        <td>{{ c }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                        </td>
+{#                        <td>#}
+{#                            <table class="ui striped celled unstackable table tabelas">#}
+{##}
+{#                                {% for c in cor %}#}
+{#                                    <tr>#}
+{#                                        <td>#}
+{#                                            {% if c == "Vermelho" %}#}
+{#                                                <font color="red">{{ c }}</font>#}
+{#                                            {% elif c == "Verde" %}#}
+{#                                                <font color="green">{{ c }}</font>#}
+{#                                            {% else %}#}
+{#                                                <font color="yellow">{{ c }}</font>#}
+{#                                            {% endif %}#}
+{#                                        </td>#}
+{#                                    </tr>#}
+{#                                {% endfor %}#}
+{#                            </table>#}
+{#                        </td>#}
                         <td>
                             <table class="ui striped celled unstackable table tabelas">
 
                                 {% for s in similaridade %}
                                     <tr>
-                                        <td>{{ s }}</td>
+                                        <td>{{ s }} %</td>
                                     </tr>
                                 {% endfor %}
                             </table>
                         </td>
                     </tr>
                 </table>
+                </div>
                 <table class="ui striped celled unstackable table">
                     <tfoot>
+                    <div id="pageNav"></div>
                     <tr>
                         <th colspan="8">
                         <a class="ui left labeled icon secundary button cadCaso"><i class="icon add"></i>Se nenhum Caso acima te ajudou, cadastre um Novo Caso</a>
-                            <div class="ui right floated pagination secondary menu">
-                                {% if dados.has_previous %}
-                                    <a href="?page={{ dados.previous_page_number }}&similar" class="icon item">
-                                        <i class="left chevron icon"></i>
-                                    </a>
-                                {% endif %}
-                                <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
-                                {% if dados.has_next %}
-                                    <a href="?page={{ dados.next_page_number }}&similar" class="icon item">
-                                        <i class="right chevron icon"></i>
-                                    </a>
-                                {% endif %}
-                            </div>
+{#                            <div class="ui right floated pagination secondary menu">#}
+{#                                {% if dados.has_previous %}#}
+{#                                    <a href="?page={{ dados.previous_page_number }}&resultado" class="icon item">#}
+{#                                        <i class="left chevron icon"></i>#}
+{#                                    </a>#}
+{#                                {% endif %}#}
+{#                                <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>#}
+{#                                {% if dados.has_next %}#}
+{#                                    <a href="?page={{ dados.next_page_number }}&resultado" class="icon item">#}
+{#                                        <i class="right chevron icon"></i>#}
+{#                                    </a>#}
+{#                                {% endif %}#}
+{#                            </div>#}
                         </th>
                     </tr>
                     </tfoot>
@@ -142,5 +160,4 @@
         {% include 'caso/FormCaso.html' %}
     </div>
     </div>
-
 {% endblock %}

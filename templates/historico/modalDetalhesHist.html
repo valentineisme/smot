@@ -1,4 +1,5 @@
-<div class="ui modal {{ dado.id }}">
+{% for dado in dados %}
+<div class="ui modal modalDetalhes{{ dado.id }}">
     <table class="ui striped celled unstackable table" id="tabela_lista">
         <thead>
         <tr>
@@ -26,7 +27,14 @@
                     <td>Distância: {{ dado.distancia }} metros</td>
                 </tr>
                 <tr>
-                    <td>Plano de Ação: {{ dado.plano_acao }}</td>
+                    {% if dado.resultado == "Amarelo" %}
+                        <td bgcolor="#b8860b">
+                    {% elif dado.resultado == "Vermelho" %}
+                        <td bgcolor="red">
+                    {% else %}
+                        <td bgcolor="green">
+                    {% endif %}
+                    Plano de Ação: {{ dado.plano_acao }}</td>
                 </tr>
             </table>
             <table class="ui striped celled unstackable table" id="tabela_lista">
@@ -42,4 +50,5 @@
         </div>
     </div>
 </div>
+{% endfor %}
 {% include 'historico/modalExcluirHist.html' %}

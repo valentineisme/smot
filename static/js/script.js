@@ -48,6 +48,9 @@ $(document).ready(function () {
     $("body").on("click", ".editarImagem", function () {
         $('.modalEditarImagem').modal('show');
     });
+    $("body").on("click", ".utilizarImagem", function () {
+        $('.modalUtilizar').modal('show');
+    });
 
     //caso
     $("body").on("click", ".cadCaso", function () {
@@ -64,6 +67,9 @@ $(document).ready(function () {
     $("body").on("click", ".excluirHist", function () {
         $('.modalExcluirHist').modal('show');
     });
+    // $("body").on("click", ".abrirDetalhesHist", function () {
+    //     $('.modalDetalhes').modal('show');
+    // });
 
     //tabelas de pesquisa
     var filtro = document.getElementById('filtro_pesquisa');
@@ -87,4 +93,21 @@ $(document).ready(function () {
             tabela2.rows[i].style.display = corresponde ? '' : 'none';
         }
     };
+
 });
+
+
+var $section = $('section').first();
+    $section.find('.panzoom').panzoom({
+        $zoomIn: $section.find(".zoom-in"),
+        $zoomOut: $section.find(".zoom-out"),
+        $zoomRange: $section.find(".zoom-range"),
+        $reset: $section.find(".reset")
+    });
+
+
+    $('#range-1').range({
+        min: 0,
+        max: 100,
+        start: 0,
+    });

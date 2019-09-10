@@ -26,7 +26,11 @@
             </tr>
             </thead>
         </table>
-        <div class="ui bottom active attached tab segment" data-tab="first">
+        {% if ativo == 1 %}
+            <div class="ui bottom active attached tab segment" data-tab="first">
+        {% else %}
+            <div class="ui bottom attached tab segment" data-tab="first">
+        {% endif %}
             <table class="ui striped celled unstackable table" id="tabela_lista1">
                 <thead>
                 <tr>
@@ -96,8 +100,13 @@
                 </tfoot>
             </table>
         </div>
-        <div class="ui bottom attached tab segment" data-tab="second">
-            <table class="ui striped celled unstackable table" id="tabela_lista2">
+
+        {% if ativo == 2%}
+            <div class="ui bottom active attached tab segment" data-tab="second">
+        {% else %}
+            <div class="ui bottom attached tab segment" data-tab="second">
+        {% endif %}
+        <table class="ui striped celled unstackable table" id="tabela_lista2">
                 <thead>
                 <tr>
                     <th>Comunidade</th>
@@ -141,13 +150,13 @@
                     <th colspan="5">
                         <div class="ui right floated pagination secondary menu">
                             {% if outros.has_previous %}
-                                <a href="?page={{ outros.previous_page_number }}" class="icon item">
+                                <a href="?pages={{ outros.previous_page_number }}" class="icon item">
                                     <i class="left chevron icon"></i>
                                 </a>
                             {% endif %}
                             <a class="item">Página {{ outros.number }} de {{ outros.paginator.num_pages }}</a>
                             {% if outros.has_next %}
-                                <a href="?page={{ outros.next_page_number }}" class="icon item">
+                                <a href="?pages={{ outros.next_page_number }}" class="icon item">
                                     <i class="right chevron icon"></i>
                                 </a>
                             {% endif %}

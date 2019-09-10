@@ -41,8 +41,10 @@ urlpatterns = [
     url(r'^Imagem_Lista/Edit_Campos/$', views.Imagem_Edit_Campos, name='Imagem_Edit_Campos'),
     url(r'^Imagem_Cadastro/$', views.Imagem_Cadastro, name='Imagem_Cadastro'),
     url(r'^Imagem_Publica/$', views.Imagem_Publica, name='Imagem_Publica'),
+    url(r'^Imagem_Publica/Utilizar/(?P<img_id>\d+)/$', views.Imagem_Utilizar, name='Imagem_Utilizar'),
 
     url(r'^Casos/$', views.Casos, name='Casos'),
+    url(r'^Casos/(?P<caso_id>\d+)/$', views.Casos, name='Casos'),
     url(r'^CadCaso/', views.CadCaso, name='CadCaso'),
     url(r'^Casos/Delete/(?P<caso_id>\d+)/(?P<ob1_id>\d+)/(?P<rel_id>\d+)/(?P<ob2_id>\d+)/$', views.Casos_Excluir, name='Casos_Excluir'),
     url(r'^Caso/Edit/$', views.Caso_Edit, name='Caso_Edit'),
@@ -52,4 +54,4 @@ urlpatterns = [
     url(r'^Historico/$', views.Historico, name='Historico'),
     url(r'^Historico/Delete/(?P<hist_id>\d+)/(?P<imagem_id>\d+)/(?P<comu_id>\d+)/$', views.Historico_Excluir, name='Historico_Excluir'),
     url(r'^ComparacaoHist/', views.ComparacaoHist, name='ComparacaoHist'),
-]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

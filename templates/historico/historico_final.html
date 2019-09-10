@@ -19,22 +19,32 @@
                 <div class="ui three column grid">
                     {% if dados %}
                         {% for dado in dados %}
+
+
                             <script>
-                                $(document).ready(function () {
-                                    $('.ui.modal.{{ dado.id }}')
-                                        .modal('setting', 'closable', true)
-                                        .modal('attach events', '.{{ dado.id }}', 'show')
-                                        .modal('attach events', '.ui.button.ok', 'hide');
-                                })
+                            $("body").on("click", ".abrirDetalhesHist{{ dado.id }}", function () {
+                                $('.modalDetalhes{{ dado.id }}').modal('show');
+                            });
                             </script>
-                            {% include 'historico/modalDetalhesHist.html' %}
+
 
 
                             <div class="column lista {{ dado.id }}">
-                                <div class="ui segment">
+                                <div class="ui segment abrirDetalhesHist{{ dado.id }}" onclick="">
+                                    <div class="ui corner label">
+                                        {% if dado.resultado == "Amarelo" %}
+                                            <i class="asterisk icon yellow" ></i>
+                                        {% elif dado.resultado == "Vermelho" %}
+                                            <i class="asterisk icon red" ></i>
+                                        {% else %}
+                                            <i class="asterisk icon green" ></i>
+                                        {% endif %}
+
+                                    </div>
                                     <img src="/media//media/{{ dado.imagem.img }}" width="300" height="300"><br>
                                     {{ dado.imagem.comunidade.nome }}<br>
-                                    Data do Monitoramento: {{ dado.data }}
+                                    Data do Monitoramento: {{ dado.data }} <br>
+                                    Plano de Ação: {{ dado.plano_acao }}
                                 </div>
                             </div>
 
@@ -83,4 +93,6 @@
             </form>
         </div>
     </div>
+{% include 'historico/modalDetalhesHist.html' %}
+
 {% endblock %}

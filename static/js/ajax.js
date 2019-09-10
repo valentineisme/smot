@@ -110,7 +110,8 @@ function imagem_pub_coor() {
                         cards += "<div class='ui card'><div class='image'><img id='url_imagem' src='/media/media/" + data[i].fields['img'] + "'/></div>" +
                             "<div class='content'><a class='header' id='data_imagem'>" + data[i].fields['dataImagem'] + "</a>" +
                             "<div class='item' id='lati'>" + data[i].fields['latitude'] + "</div><div class='item' id='longi'>" + data[i].fields['longitude'] + "</div><div class='ui divided list'>" +
-                            "</div></div></div>";
+                            "<a class='cursorPointer utilizarImagem ui-tooltip' data-tooltip='Utilizar' onclick='utilizar("+ data[i].pk + ")'><i class='ui download green large icon'></i>" +
+                            "</a></div></div></div>";
                     }
                 }
                 if (cards === '') {
@@ -173,11 +174,11 @@ function caso_editar(id) {
         },
         dataType: 'json',
         success: function (data) {
-            $("input#id_objeto1").attr('value', data[0].fields['objeto1']);
-            $("input#id_relacao").attr('value', data[0].fields['relacao']);
-            $("input#id_objeto2").attr('value', data[0].fields['objeto2']);
+            $("input#ob1").attr('value', data[0].fields['objeto1']);
+            $("input#rel").attr('value', data[0].fields['relacao']);
+            $("input#ob2").attr('value', data[0].fields['objeto2']);
             $("input#id_distancia").attr('value', data[0].fields['distancia']);
-            $("input#id_restricao").attr('value', data[0].fields['restricao']);
+            $("input#restri").attr('value', data[0].fields['restricao']);
             $("input#id_resultado").attr('value', data[0].fields['resultado']);
             $("input#id_plano_acao").attr('value', data[0].fields['plano_acao']);
             $("input#caso_id").attr('value', data[0].pk);

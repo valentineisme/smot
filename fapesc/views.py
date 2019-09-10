@@ -74,8 +74,12 @@ def Comunidade(request):
     current_user = usuario.objects.get(email=request.user)
     ComunidadeList = comunidade.objects.filter(id_usuario=current_user)
     ComunidadeOutros = comunidade.objects.filter(permissao='S').exclude(id_usuario=current_user)
+    if request.GET.get('pages'):
+        ativo = 2
+    else:
+        ativo = 1
     form = ComunidadeForm()
-    paginator = Paginator(ComunidadeList, 2)
+    paginator = Paginator(ComunidadeList, 7)
     page = request.GET.get('page')
     try:
         dados = paginator.page(page)
@@ -84,15 +88,15 @@ def Comunidade(request):
     except EmptyPage:
         dados = paginator.page(paginator.num_pages)
 
-    paginator = Paginator(ComunidadeOutros, 2)
-    page = request.GET.get('page')
+    paginator = Paginator(ComunidadeOutros, 7)
+    page = request.GET.get('pages')
     try:
         dadosOutros = paginator.page(page)
     except PageNotAnInteger:
         dadosOutros = paginator.page(1)
     except EmptyPage:
         dadosOutros = paginator.page(paginator.num_pages)
-    return render(request, 'comunidade/comunidade.html', {"outros":dadosOutros, "dados": dados, "form": form})
+    return render(request, 'comunidade/comunidade.html', {"ativo": ativo, "outros":dadosOutros, "dados": dados, "form": form})
 
 
 @login_required
@@ -158,9 +162,14 @@ def Comunidade_Excluir(request, comu_id=None):
 @login_required
 def Comunidade_Permitir(request, comu_id=None):
     comu = comunidade.objects.get(pk=comu_id)
+    current_user = usuario.objects.get(email=request.user)
     if comu.id != None:
         if comu.permissao == "S":
             comu.permissao = "N"
+            imgs = imagem.objects.filter(comunidade = comu, usuario=current_user)
+            for im in imgs:
+                im.permissao = "N"
+                im.save()
         elif comu.permissao == "N":
             comu.permissao = "S"
         comu.save()
@@ -309,15 +318,43 @@ def Imagem_Edit_Campos(request):
         json = serializers.serialize("json", img)
         return HttpResponse(json)
 
+@login_required
+def Imagem_Utilizar(request, img_id=None):
+    img = imagem.objects.get(pk = img_id)
+    current_user = usuario.objects.get(email=request.user)
+    if img.id != None:
+        c = comunidade()
+        i = imagem()
+        c.nome = img.comunidade.nome
+        c.estado = img.comunidade.estado
+        c.cidade = img.comunidade.cidade
+        c.bairro = img.comunidade.bairro
+        c.id_usuario = current_user
+        c.save()
+        i.comunidade = c
+        i.latitude = img.latitude
+        i.longitude = img.longitude
+        i.img = img.img
+        i.dataImagem = img.dataImagem
+        i.usuario = current_user
+        i.save()
+    return redirect('Comunidade')
+
 # caso
 @login_required
-def Casos(request):
+def Casos(request, caso_id = None):
     form = CasoForm()
-    if request.POST.get('objeto1') or request.GET:
+    current_user = usuario.objects.get(email = request.user)
+    if request.POST.get('objeto1') or request.GET.get('ob1') or caso_id:
         if request.GET:
             objeto1 = request.GET.get('ob1')
             relac = request.GET.get('rel')
             objeto2 = request.GET.get('ob2')
+        elif caso_id:
+            current_caso = casos.objects.get(id = caso_id)
+            objeto1 = current_caso.objeto1.id
+            relac = current_caso.relacao.id
+            objeto2 = current_caso.objeto2.id
         elif request.POST:
             form = CasoForm(request.POST)
             objeto1 = request.POST.get('objeto1')
@@ -329,11 +366,11 @@ def Casos(request):
         ob2 = objeto.objects.get(id=objeto2)
 
         rel = ob1.nome+" "+rela.nome+" "+ob2.nome
-        current_casos = casos.objects.filter(objeto1=objeto1, relacao=relac, objeto2 = objeto2)
-        current_casos1 = casos.objects.filter(objeto1=objeto2, relacao=relac, objeto2 = objeto1)
+        current_casos = casos.objects.filter(objeto1=objeto1, relacao=relac, objeto2 = objeto2, id_usuario=current_user)
+        current_casos1 = casos.objects.filter(objeto1=objeto2, relacao=relac, objeto2 = objeto1, id_usuario=current_user)
 
         if current_casos:
-            current_casos1 = current_casos
+            current_casos1 = current_casos | current_casos1
 
         paginator = Paginator(current_casos1, 3)
         page = request.GET.get('page')
@@ -343,7 +380,7 @@ def Casos(request):
             dados = paginator.page(1)
         except EmptyPage:
             dados = paginator.page(paginator.num_pages)
-        return render(request, 'caso/casoLista.html', {'form':form, 'dados': dados, 'rel':rel})
+        return render(request, 'caso/casoLista.html', {'form':form, 'dados': dados, 'rel':rel, 'ob1':ob1.id,'rela':rela.id,'ob2':ob2.id})
     return render(request, 'caso/caso.html', {'form': form})
 
 @login_required
@@ -362,13 +399,11 @@ def CadCaso(request):
         if form.is_valid():
             post = form.save(commit=False)
             current_user = usuario.objects.get(email=request.user)
-            print(current_user.id)
             post.id_usuario = current_user
-
             post.save()
             if request.POST.get('monitorar'):
                 return resultadoCaso(request)
-            return Casos(request)
+            return redirect('/Casos/?ob1='+str(post.objeto1.id)+'&rel='+str(post.relacao.id)+'&ob2='+str(post.objeto2.id))
         else:
             print(form.errors)
         return redirect('/Casos/')
@@ -378,6 +413,7 @@ def Caso_Edit_Campos(request):
     if request.GET['caso']:
         caso_id = request.GET['caso']
         c = casos.objects.filter(id=caso_id)
+        form = CasoForm(c)
         json = serializers.serialize("json", c)
         return HttpResponse(json)
 
@@ -386,21 +422,12 @@ def Caso_Edit(request):
     if request.POST['caso_id']:
         caso_id = request.POST['caso_id']
         c = casos.objects.get(pk=caso_id)
-        ob1 = objeto.objects.get(pk=request.POST['objeto1'])
-        rel = relacao.objects.get(pk=request.POST['relacao'])
-        ob2 = objeto.objects.get(pk=request.POST['objeto2'])
-        rest = restricao.objects.get(pk=request.POST['restricao'])
-        form = CasoForm(request.POST)
-        if form.is_valid():
-            c.objeto1 = ob1
-            c.relacao = rel
-            c.objeto2 = ob2
+        if c:
             c.distancia = request.POST['distancia']
-            c.restricao = rest
             c.resultado = request.POST['resultado']
             c.plano_acao = request.POST['plano_acao']
             c.save()
-        return Casos(request)
+        return redirect('/Casos/' + str(c.id) + '/')
 
 @login_required
 def resultadoCaso(request):
@@ -429,9 +456,9 @@ def resultadoCaso(request):
     metros = []
     novo = ''
     plano = []
+    monitorando = True
     cor = []
-    monitoramento = True
-
+    current_user = usuario.objects.get(email=request.user)
     def EhIgual(x, y):
         if (x == y):
             peso = 0
@@ -442,36 +469,58 @@ def resultadoCaso(request):
     def distancia(peso, caso, novoProblema):
         pesoInstancias = []
         distancia = 0.0
+
         for i in range(0, len(peso)):
             pesoInstancias.append(EhIgual(str(caso[i]), novoProblema[i]))
         for i in range(0, len(peso)):
             distancia += (peso[i] * pesoInstancias[i])
         distancia = distancia
-        if distancia == 0.0:
-            simi = "100%"
-        elif distancia == 0.4:
-            simi = "75%"
-        elif distancia == 0.8:
-            simi = "50%"
+
+        percent_caso_velho = (caso[3] * 100) / caso[7]
+        percent_caso_novo = (int(novoProblema[3]) * 100) / caso[7]
+
+        distancia_percent = percent_caso_novo - percent_caso_velho
+        distancia_percent = abs(distancia_percent)
+
+        if (0 <= distancia_percent <= 25):
+            simi_dist = 0
+        elif (26 <= distancia_percent <= 50):
+            simi_dist = 13
+        elif (51 <= distancia_percent <= 75):
+            simi_dist = 26
         else:
-            simi = "nenhum caso similares"
+            simi_dist = 40
+
+        if distancia == 0.0:
+            simi = 100
+        elif distancia == 0.4:
+            simi = 75
+        elif distancia == 0.8:
+            simi = 50
+        else:
+            simi = 0
+
+        simi = simi - simi_dist
         resultado = [caso, novoProblema, distancia, simi]
-        if (resultado[2] == 0.0 or resultado[2] == 0.4):  # or resultado[2] == 0.8):
+        if (resultado[2] == 0.0 or resultado[2] == 0.4 or resultado[2] == 0.8):
             return resultado
 
-    casolist = casos.objects.order_by('-id')
+    if request.POST.get('filtro_caso') == "geral":
+        casolist = casos.objects.order_by('-id')
+    else:
+        casolist = casos.objects.filter(id_usuario=current_user).order_by('-id')
     for caso in casolist:
         velhoCaso = [str(caso.objeto1), str(caso.relacao), str(caso.objeto2), caso.distancia, str(caso.resultado),
-                     str(caso.plano_acao), caso.id]
+                     str(caso.plano_acao), caso.id, caso.restricao.distancia]
         velhoCaso1 = [str(caso.objeto2), str(caso.relacao), str(caso.objeto1), caso.distancia, str(caso.resultado),
-                      str(caso.plano_acao), caso.id]
+                      str(caso.plano_acao), caso.id, caso.restricao.distancia]
         current = distancia(peso, velhoCaso, novoCaso)
         current1 = distancia(peso, velhoCaso1, novoCaso)
         if type(current) == list:
             resultado.append(current)
         if type(current1) == list:
             resultado.append(current1)
-    resultado.sort(key=lambda x: x[2])
+    resultado.sort(key=lambda x: x[3], reverse = True)
     for r in resultado:
         antigo.append(r[0])
         o1.append(r[0][0])
@@ -482,8 +531,7 @@ def resultadoCaso(request):
         cor.append(r[0][4])
         similar.append(r[3])
         novo = r[1][0] + " " + r[1][1] + " " + r[1][2] + " a " + r[1][3] + " metros"
-
-    # paginator = Paginator(casolist, 3)
+    # paginator = Paginator(resultado, 3)
     # page = request.GET.get('page')
     # try:
     #     dados = paginator.page(page)
@@ -492,8 +540,8 @@ def resultadoCaso(request):
     # except EmptyPage:
     #     dados = paginator.page(paginator.num_pages)
     return render(request, 'monitoramento/monitoramento_casos_similares.html',
-                  {"monitorando":monitoramento, "novo": novo, "metros": metros, "cor": cor, "plano": plano, "o1": o1, "relac": relac, "o2": o2,
-                   "step": step, "resultado": resultado, "id_comu": current_imagem.comunidade.id, "current_imagem":current_imagem, "id_imagem": id_imagem, 'form': form, 'antigo': antigo,
+                  {"monitorando":monitorando, "novo": novo, "metros": metros, "cor": cor, "plano": plano, "o1": o1, "relac": relac, "o2": o2,
+                   "step": step, "resultado":resultado, "id_comu": current_imagem.comunidade.id, "current_imagem":current_imagem, "id_imagem": id_imagem, 'form': form, 'antigo': antigo,
                    'similaridade': similar})
 
 
@@ -549,12 +597,12 @@ def monitoramento(request, id_comunidade=None):
         form = BuscarCasoForm()
         return render(request, 'monitoramento/monitoramento_caso.html',
                       {'step': step, 'form': form, 'imagem': im, 'comunidade': id_comu})
-    elif request.POST.get("caso_inserido") or request.GET.get("similar"):
+    elif request.POST.get("caso_inserido") or request.GET.get("resultado"):
         return resultadoCaso(request)
     elif request.POST.get("caso_selecionado"):
         return cadHistorico(request)
     else:
-        ComunidadeList = comunidade.objects.all()
+        ComunidadeList = comunidade.objects.filter(id_usuario=current_user)
         step = 1
         return render(request, 'monitoramento/monitoramento_comu.html', {'form':form, 'monitorando':monitorando, 'step': step, 'comunidades': ComunidadeList})
 
@@ -570,21 +618,24 @@ def cadHistorico(request):
     if request.POST:
         resultado_selecionado = request.POST.get('resultado')
         id_imagem = request.POST.get('caso_selecionado')
+    elif request.caso_selecionado:
+        resultado_selecionado = request.resultado
+        id_imagem = request.caso_selecionado
     result = resultado_selecionado.split("],")
     for letra in result[0]:
-        if letra in "[]'":
+        if letra in "[]' ":
             pass
         else:
             antigo += letra
 
     for letra in result[1]:
-        if letra in "[]'":
+        if letra in "[]' ":
             pass
         else:
             novo += letra
 
     for letra in result[2]:
-        if letra in "[]'":
+        if letra in "[]' ":
             pass
         else:
             simi += letra
@@ -620,7 +671,7 @@ def cadHistorico(request):
 @login_required
 def Historico(request):
     current_user = usuario.objects.get(email=request.user)
-    ComunidadeList = comunidade.objects.all()
+    ComunidadeList = comunidade.objects.filter(id_usuario = current_user)
     if request.POST.get('comu') or request.GET.get('comu'):
         if request.POST.get('comu'):
             current_comu = comunidade.objects.get(id=request.POST.get('comu'))
@@ -646,6 +697,8 @@ def Historico(request):
             current_comu = comunidade.objects.get(id=request.GET.get('id_comu'))
             current_imagem = imagem.objects.get(id=request.GET.get("id_imagem"))
         historicoList = historico.objects.filter(imagem=current_imagem, usuario=current_user)
+
+
         paginator = Paginator(historicoList, 3)
         page = request.GET.get('page')
         try:
@@ -654,6 +707,7 @@ def Historico(request):
             dados = paginator.page(1)
         except EmptyPage:
             dados = paginator.page(paginator.num_pages)
+
         return render(request, 'historico/historico_final.html',
                       {"imagem": current_imagem, "dados": dados, 'comunidade': current_comu})
     else:

@@ -1,4 +1,6 @@
 from django.db import models
+import os
+from django.conf import settings
 from django.contrib.auth.models import User
 
 
@@ -95,7 +97,7 @@ class comunidade(models.Model):
 
 
 class imagem(models.Model):
-    img = models.ImageField(upload_to='static/media/media/', blank=True)
+    img = models.ImageField(upload_to='media/', blank=True)
     usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
     dataImagem = models.DateField(blank=True)
     latitude = models.CharField(max_length=128)
