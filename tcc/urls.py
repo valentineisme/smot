@@ -26,17 +26,18 @@ urlpatterns = [
     url(r'^Comunidade_Cadastro/$', views.Comunidade_Cadastro, name='Comunidade_Cadastro'),
     url(r'^Comunidade/Edit/$', views.Comunidade_Edit, name='Comunidade_Edit'),
     url(r'^Comunidade/Edit_Campos/$', views.Comunidade_Edit_Campos, name='Comunidade_Edit_Campos'),
-    url(r'^Comunidade/Delete/(?P<comu_id>\d+)/$', views.Comunidade_Excluir, name='Comunidade_Excluir'),
-    url(r'^Comunidade/Permitir/(?P<comu_id>\d+)/$', views.Comunidade_Permitir, name='Comunidade_Permitir'),
+    url(r'^Comunidade/Delete/(?P<comu_id>\d+)/(?P<page>\d+)/$', views.Comunidade_Excluir, name='Comunidade_Excluir'),
+    url(r'^Comunidade/Permitir/(?P<comu_id>\d+)/(?P<page>\d+)/$', views.Comunidade_Permitir, name='Comunidade_Permitir'),
     url(r'^Comunidade/Utilizar/(?P<comu_id>\d+)/$', views.Comunidade_Utilizar, name='Comunidade_Utilizar'),
 
 
     url(r'^Imagem/$', views.Imagem, name='Imagem'),
     url(r'^Imagem_Lista/$', views.Imagem_Lista, name='Imagem_Lista'),
     url(r'^Imagem_Lista/(?P<comu_id>\d+)/$', views.Imagem_Lista, name='Imagem_Lista'),
-    url(r'^Imagem_Lista/(?P<comu_id>\d+)/Permitir/(?P<img_id>\d+)/$', views.Imagem_Permitir, name='Imagem_Permitir'),
-    url(r'^Imagem_Lista/Delete/(?P<img_id>\d+)/(?P<comu_id>\d+)/$', views.Imagem_Excluir, name='Imagem_Excluir'),
+    url(r'^Imagem_Lista/(?P<comu_id>\d+)/Permitir/(?P<img_id>\d+)/(?P<page>\d+)/$', views.Imagem_Permitir, name='Imagem_Permitir'),
+    url(r'^Imagem_Lista/Delete/(?P<img_id>\d+)/(?P<comu_id>\d+)/(?P<page>\d+)/$', views.Imagem_Excluir, name='Imagem_Excluir'),
     url(r'^Imagem_Lista/Permitir/(?P<img_id>\d+)/$', views.Imagem_Permitir, name='Imagem_Permitir'),
+    url(r'^Imagem_Lista/Permitir/(?P<img_id>\d+)/(?P<page>\d+)/$', views.Imagem_Permitir, name='Imagem_Permitir'),
     url(r'^Imagem_Lista/Edit/$', views.Imagem_Edit, name='Imagem_Edit'),
     url(r'^Imagem_Lista/Edit_Campos/$', views.Imagem_Edit_Campos, name='Imagem_Edit_Campos'),
     url(r'^Imagem_Cadastro/$', views.Imagem_Cadastro, name='Imagem_Cadastro'),
@@ -52,6 +53,7 @@ urlpatterns = [
 
     url(r'^cadHistorico/', views.cadHistorico, name='cadHistorico'),
     url(r'^Historico/$', views.Historico, name='Historico'),
-    url(r'^Historico/Delete/(?P<hist_id>\d+)/(?P<imagem_id>\d+)/(?P<comu_id>\d+)/$', views.Historico_Excluir, name='Historico_Excluir'),
+    url(r'^Historico/Delete/(?P<hist_id>\d+)/(?P<imagem_id>\d+)/(?P<comu_id>\d+)/(?P<page>\d+)/$', views.Historico_Excluir, name='Historico_Excluir'),
+    url(r'^Historico/Delete/Lati/(?P<hist_id>\d+)/(?P<imagem_id>\d+)/(?P<comu_id>\d+)/(?P<page>\d+)/$', views.Historico_Excluir_Lati, name='Historico_Excluir_Lati'),
     url(r'^ComparacaoHist/', views.ComparacaoHist, name='ComparacaoHist'),
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

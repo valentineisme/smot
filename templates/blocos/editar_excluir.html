@@ -3,14 +3,14 @@
         <i class="ui write black large icon adm_img"></i>
     </button>
     {% if dado.permissao == "S" %}
-        <button type="submit" class="ui PermitirImagem button  ui-tooltip" data-tooltip="Tornar Privado" onclick="permitir({{ dado.id }});" >
+        <button type="submit" class="ui PermitirImagem button  ui-tooltip" data-tooltip="Tornar Privado" onclick="permitir({{ dado.id }}, {{ dados.number }});" >
         <i class="ui eye green large icon adm_img"></i>
     {% else %}
-        <button type="submit" class="ui PermitirImagem button  ui-tooltip" data-tooltip="Permitir" onclick="permitir({{ dado.id }});" >
+        <button type="submit" class="ui PermitirImagem button  ui-tooltip" data-tooltip="Permitir" onclick="permitir({{ dado.id }}, {{ dados.number }});" >
         <i class="ui eye slash outline large icon adm_img"></i>
     {% endif %}
     </button>
-    <button type="submit" class="ui ExcluirImagem button ui-tooltip" data-tooltip="Excluir" onclick="imagem_excluir({{ dado.id }},{{ comunidade.id }});" >
+    <button type="submit" class="ui ExcluirImagem button ui-tooltip" data-tooltip="Excluir" onclick="imagem_excluir({{ dado.id }},{{ comunidade.id }}, {{ dados.number }});" >
     <i class="ui trash red large icon adm_img"></i>
     </button>
     {% include "imagem/modalExcluirImagem.html" %}

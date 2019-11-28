@@ -36,7 +36,9 @@ function comu_editar(id) {
             $("input#nome_comu").attr('value', data[0].fields['nome']);
             $("input#bairro_comu").attr('value', data[0].fields['bairro']);
             $("input#cidade_comu").attr('value', data[0].fields['cidade']);
+            $("input#cidade_cad").attr('value', data[0].fields['cidade']);
             $("input#estado_comu").attr('value', data[0].fields['estado']);
+            $("input#estado_cad").attr('value', data[0].fields['estado']);
             $("input#id_comu").attr('value', data[0].pk);
         },
         error: function (xhr, errmsg) {
@@ -45,10 +47,10 @@ function comu_editar(id) {
     });
 }
 
-function comu_excluir(id) {
+function comu_excluir(id, page) {
     var nome = $("input#" + id).val();
     $("span#nome_exc").html(nome);
-    var link = 'Delete/' + id;
+    var link = 'Delete/' + id + '/' + page;
     $("a#link_exc").attr('href', link);
 }
 
@@ -107,7 +109,7 @@ function imagem_pub_coor() {
                 var cards = "";
                 for (var i = 0; i < data.length; i++) {
                     if (data[i] !== '') {
-                        cards += "<div class='ui card'><div class='image'><img id='url_imagem' src='/media/media/" + data[i].fields['img'] + "'/></div>" +
+                        cards += "<div class='ui card'><div class='image'><img id='url_imagem' src='/media/" + data[i].fields['img'] + "'/></div>" +
                             "<div class='content'><a class='header' id='data_imagem'>" + data[i].fields['dataImagem'] + "</a>" +
                             "<div class='item' id='lati'>" + data[i].fields['latitude'] + "</div><div class='item' id='longi'>" + data[i].fields['longitude'] + "</div><div class='ui divided list'>" +
                             "<a class='cursorPointer utilizarImagem ui-tooltip' data-tooltip='Utilizar' onclick='utilizar("+ data[i].pk + ")'><i class='ui download green large icon'></i>" +
@@ -147,19 +149,26 @@ function imagem_editar(id) {
     });
 }
 
-function imagem_excluir(id, comu_id) {
+function imagem_excluir(id, comu_id, page) {
     var nome = $("input#" + id).val();
     $("span#nome").html(nome);
-    var link = '/Imagem_Lista/Delete/' + id + '/' + comu_id;
+    var link = '/Imagem_Lista/Delete/' + id + '/' + comu_id + '/' + page;
     $("a#link").attr('href', link);
 }
 
 
 //historico
-function historico_excluir(id, imagem_id, comunidade_id) {
+function historico_excluir(id, imagem_id, comunidade_id, page) {
     var nome = $("input#" + id).val();
     $("span#nome").html(nome);
-    var link = '/Historico/Delete/' + id + '/' + imagem_id + '/' + comunidade_id;
+    var link = '/Historico/Delete/' + id + '/' + imagem_id + '/' + comunidade_id + '/' + page;
+    $("a#link").attr('href', link);
+}
+
+function historico_excluir_lati(id, imagem_id, comunidade_id, page) {
+    var nome = $("input#" + id).val();
+    $("span#nome").html(nome);
+    var link = '/Historico/Delete/Lati/' + id + '/' + imagem_id + '/' + comunidade_id + '/' + page;
     $("a#link").attr('href', link);
 }
 
@@ -200,12 +209,69 @@ function mostrar_conteudo(){
     $('div.modalListarImagem').removeClass('modal')
 }
 
-function permitir(id) {
-    var links = 'Permitir/' + id;
+function permitir(id, page) {
+    var links = 'Permitir/' + id + '/' + page;
     $("a#link_per").attr('href', links);
 }
 
 function utilizar(id) {
     var links = 'Utilizar/' + id;
     $("a#link_uti").attr('href', links);
+}
+
+// //data_nascimento
+// function VerificaData() {
+//     if (validardataDeNascimento(document.imagem_form.data.value)) {
+//         document.getElementById("msgdata").innerHTML = "";
+//
+//     } else {
+//         errors = "1";
+//         document.getElementById("msgdata").innerHTML = "<font color='red'>Data Invalida </font>";
+//         document.retorno = (errors == '');
+//     }
+// }
+//
+// function validardataDeNascimento(data) {
+//
+//     dataAtual = new Date();
+//     data = new Date(data);
+//     if ((data < dataAtual)){
+//         console.log("Data Válida");
+//         return true;
+//     } else {
+//         console.log("Data Inválida");
+//         return false;
+//     }
+// }
+
+//email
+
+function VerificaEmail() {
+    if (validacaoEmail(document.usuario_form.email.value)) {
+        document.getElementById("msgemail").innerHTML = "";
+         document.usuario_form.submit();
+    } else {
+        errors = "1";
+        document.getElementById("msgemail").innerHTML = "<font color='red'>E-mail invalido </font>";
+        document.retorno = (errors == '');
+    }
+}
+
+function validacaoEmail(email) {
+    usuario = email.substring(0, email.indexOf("@"));
+    dominio = email.substring(email.indexOf("@") + 1, email.length);
+
+    if ((usuario.length >= 1) &&
+        (dominio.length >= 3) &&
+        (usuario.search("@") == -1) &&
+        (dominio.search("@") == -1) &&
+        (usuario.search(" ") == -1) &&
+        (dominio.search(" ") == -1) &&
+        (dominio.search(".") != -1) &&
+        (dominio.indexOf(".") >= 1) &&
+        (dominio.lastIndexOf(".") < dominio.length - 1)) {
+        return true;
+    } else {
+        return false;
+    }
 }

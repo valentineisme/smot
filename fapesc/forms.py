@@ -6,14 +6,14 @@ class UsuarioForm(forms.ModelForm):
 
     nome = forms.CharField(max_length=78, help_text='Nome:')
     sobrenome = forms.CharField(max_length=128, help_text='Sobrenome:')
-    dataNasc = forms.DateField(help_text='Data:')
+    dataNasc = forms.DateField(widget=forms.TextInput(attrs={'type':'date'}))
 
     # rua = forms.CharField(max_length=128, help_text='Rua:')
     # numero = forms.IntegerField(help_text='Numero:')
     # bairro = forms.CharField(max_length=128, help_text='Bairro:')
     # cidade = forms.CharField(max_length=128, help_text='Cidade:')
     # estado = forms.CharField(max_length=128, help_text='Estado:')
-    email = forms.CharField(max_length=128, help_text='E-mail:')
+    email = forms.CharField(max_length=128, help_text='E-mail', widget=forms.TextInput(attrs={"required": True}))
     senha = forms.CharField(max_length=128, widget=forms.PasswordInput, help_text='Senha:')
 
     class Meta:
@@ -33,13 +33,14 @@ class ComunidadeForm(forms.ModelForm):
 
 class ImagemForm(forms.ModelForm):
     img = forms.ImageField()
-    dataImagem = forms.DateField(widget=forms.TextInput(attrs={'onfocus': 'limita_data_final()'}))
+    dataImagem = forms.DateField(widget=forms.TextInput(attrs={'type':'date', 'onfocus': 'limita_data_final()'}))
     latitude = forms.CharField(max_length=78, help_text='Latitude:')
     longitude = forms.CharField(max_length=78, help_text='Longitude:')
 
     class Meta:
         model = imagem
         fields = '__all__'
+        exclude = ('id_usuario','usuario', 'permissao', 'comunidade')
 
 class CasoForm(forms.ModelForm):
 

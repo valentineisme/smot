@@ -4,7 +4,7 @@
         <i class="ui user default inverted circular icon"></i> Cadastro de Usuário
     </div>
     <div class="modalpadrao">
-        <form class="ui form" id="usuario_form" method="post" action="/CadUser/">
+        <form class="ui form" id="usuario_form" name="usuario_form" method="post" action="/CadUser/">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -53,6 +53,7 @@
                         <i class="asterisk icon"></i>
                     </div>
                 </div>
+            <div id="msgdata"></div>
             </div>
 
             <div class="field">
@@ -68,6 +69,7 @@
                         <i class="asterisk icon"></i>
                     </div>
                 </div>
+            <div id="msgemail"></div>
             </div>
 
             <div class="field">

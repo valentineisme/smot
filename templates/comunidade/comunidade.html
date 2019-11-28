@@ -49,7 +49,7 @@
                     {% for dado in dados %}
                         <tr>
                             <td colspan="2">
-                                <a class="item" href="{% url 'monitoramento' dado.id %}">{{ dado.nome }}</a>
+                                <a class="item" href="{% url 'monitoramento' dado.id %}">{{ dado.nome }} - {{ dado.bairro }} - {{ dado.cidade }} - {{ dado.estado }}</a>
                             </td>
                             {% if user.id %}
                                 <td class="collapsing center aligned ui-tooltip" data-tooltip="Editar">
@@ -59,11 +59,11 @@
                                     </a>
                                 </td>
                                 <td class="collapsing center aligned ui-tooltip" data-tooltip="Excluir">
-                                    <a class="cursorPointer excluirComu" onclick="comu_excluir({{ dado.id }});">
+                                    <a class="cursorPointer excluirComu" onclick="comu_excluir({{ dado.id }}, {{ dados.number }});">
                                         <i class="ui trash red large icon"></i>
                                     </a>
                                 </td>
-                                <td class="collapsing center aligned ui-tooltip" data-tooltip="Permissão" onclick="permitir({{ dado.id }});" >
+                                <td class="collapsing center aligned ui-tooltip" data-tooltip="Permissão" onclick="permitir({{ dado.id}}, {{ dados.number }});" >
                                     {% if dado.permissao == "S" %}
                                         <i class="ui eye green large icon permitirComu "></i>
                                     {% else %}

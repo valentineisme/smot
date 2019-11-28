@@ -1,6 +1,6 @@
 <div class="ui modal modalEditarImagem">
     <div class="ui segment issem-cad modalpadrao">
-        <form method="POST" action="{% url 'Imagem_Edit' %}" class="ui content form">
+        <form method="POST" name="imagem_form" action="{% url 'Imagem_Edit' %}" class="ui content form">
             {% csrf_token %}
             <div class="header">
                 <i class="ui book default inverted circular icon"></i> Editar Imagens
@@ -17,7 +17,8 @@
                             <option value="{{ dado.comunidade.id }}">{{ dado.comunidade.nome }}</option>
                         </select>
                     </td>
-                    <td><input type="date" id="data_img" name="imagemData" class="campo_cadastro" required></td>
+                    <td><input type="date" id="data_img" name="data" class="campo_cadastro" required>
+                        <div id="msgdata"></div></td>
                 </tr>
                 <tr>
                     <td>Latitude</td>

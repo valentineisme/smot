@@ -1,4 +1,6 @@
+{% load static %}
 {% for dado in dados %}
+
 <div class="ui modal modalDetalhes{{ dado.id }}">
     <table class="ui striped celled unstackable table" id="tabela_lista">
         <thead>
@@ -6,14 +8,15 @@
             <th class="no-sort" colspan="5">
                 <div class="ui default ribbon large label">{{ dado.imagem.comunidade.nome }}
                     - {{ dado.imagem.comunidade.bairro }} - {{ dado.imagem.comunidade.cidade }}
-                    - {{ dado.imagem.comunidade.estado }}</div>
+                    - {{ dado.imagem.comunidade.estado }} - {{ dado.imagem.dataImagem }}</div>
             </th>
         </tr>
         </thead>
     </table>
     <div class="image content">
         <div class="image">
-            <img src="/media/media/{{ dado.imagem.img }}" width="500"><br>
+            <img src="/media/{{ dado.imagem.img }}" data-zoom-image="/media/{{ dado.imagem.img }}" width="500"><br>
+
         </div>
         <div class="description">
             <table class="ui striped celled unstackable table tabelas">
@@ -40,10 +43,17 @@
             <table class="ui striped celled unstackable table" id="tabela_lista">
                 <tfoot>
                 <div class="ui two bottom attached buttons botao_inferior">
-                <button class="ui red bottom attached center aligned button excluirHist" onclick="historico_excluir({{ dado.id }},{{ dado.imagem.id }},{{ dado.imagem.comunidade.id }})" name="historico_selecionado"
+                    {% if lati %}
+                        <button class="ui red bottom attached center aligned button excluirHist" onclick="historico_excluir_lati({{ dado.id }},{{ dado.imagem.id }},{{ dado.imagem.comunidade.id }}, {{ dados.number }})" name="historico_selecionado"
                         value="{{ dado.id }}">
                     Excluir Histórico
                 </button>
+                    {% else %}
+                <button class="ui red bottom attached center aligned button excluirHist" onclick="historico_excluir({{ dado.id }},{{ dado.imagem.id }},{{ dado.imagem.comunidade.id }}, {{ dados.number }})" name="historico_selecionado"
+                        value="{{ dado.id }}">
+                    Excluir Histórico
+                </button>
+                    {% endif %}
                 </div>
                 </tfoot>
             </table>

@@ -2,7 +2,7 @@
 <div class="ui centered grid">
     <div class="ui column centered row">
         {% if not id %}
-            <input type="submit" name="submit" class="ui button green botao_main" value="Cadastrar"/>
+            <input type="submit" name="submit" id="cad" class="ui button green botao_main" onclick="VerificaEmail();" value="Cadastrar"/>
         {% else %}
             <input type="submit" name="submit" class="ui button green botao_main" value="Atualizar"/>
         {% endif %}

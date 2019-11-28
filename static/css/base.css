@@ -58,6 +58,37 @@ footer {
 #pagingControls ul{display:inline;padding-left:0.5em}
 #pagingControls li{display:inline;padding:0 0.5em}
 
+.geral_inicio{
+    height: 100% !important;
+}
+
+/*.body_inicial{*/
+/*    background-color: #8a8a8a !important;*/
+/*}*/
+
+.logo_centro_magna{
+    padding-top: 65% !important;
+}
+
+.logo_centro_smot{
+    padding-top: 65% !important;
+}
+
+.esquerda{
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.centro{
+    background-color: transparent !important;
+}
+
+.direita{
+    background-color: transparent !important;
+    border-bottom-right-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
 
 .botao_inferior{
 
@@ -83,6 +114,10 @@ footer {
     height: 30px !important;
     border-radius: 5px;
 }
+
+.imagem_article{
+    height: 375px !important;
+}
 .botaoProximo{
     margin-top: 10px !important;
 }
@@ -94,6 +129,10 @@ footer {
 .card{
     display: flex;
     justify-content: center !important;
+}
+
+.cadCaso{
+    float: right !important;
 }
 /*------------------------------*/
 .issem-dropdown {

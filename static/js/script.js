@@ -94,20 +94,32 @@ $(document).ready(function () {
         }
     };
 
+    $(".esquerda.logo_centro_smot").mouseenter(function () {
+
+        var img_smot = $('.logo_centro_smot');
+
+        $({rotation: 0}).animate({rotation: 1080}, {
+            duration: 5000,
+            easing: 'linear',
+            step: function () {
+                img_smot.css({transform: 'rotate(' + this.rotation + 'deg)'});
+                console.log(this.rotation);
+            }
+        });
+    });
+
+    $(".direita.logo_centro_magna").mouseenter(function () {
+
+        var img = $('.logo_centro_magna');
+
+        $({rotation: 0}).animate({rotation: 1080}, {
+            duration: 5000,
+            easing: 'linear',
+            step: function () {
+                img.css({transform: 'rotate(' + this.rotation + 'deg)'});
+                console.log(this.rotation);
+            }
+        });
+    });
+
 });
-
-
-var $section = $('section').first();
-    $section.find('.panzoom').panzoom({
-        $zoomIn: $section.find(".zoom-in"),
-        $zoomOut: $section.find(".zoom-out"),
-        $zoomRange: $section.find(".zoom-range"),
-        $reset: $section.find(".reset")
-    });
-
-
-    $('#range-1').range({
-        min: 0,
-        max: 100,
-        start: 0,
-    });

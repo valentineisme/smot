@@ -23,7 +23,6 @@ def index(request):
         dados = paginator.page(paginator.num_pages)
     return render(request, 'index.html', {'form': form, 'dados': dados})
 
-
 def login(request):
     form = UsuarioForm()
     ComunidadeList = comunidade.objects.all()
@@ -78,6 +77,7 @@ def Comunidade(request):
         ativo = 2
     else:
         ativo = 1
+
     form = ComunidadeForm()
     paginator = Paginator(ComunidadeList, 7)
     page = request.GET.get('page')
@@ -153,14 +153,14 @@ def Comunidade_Edit_Campos(request):
 
 
 @login_required
-def Comunidade_Excluir(request, comu_id=None):
+def Comunidade_Excluir(request, comu_id=None, page=None):
     comu = comunidade.objects.get(pk=comu_id)
     if comu.id != None:
         comu.delete()
-    return redirect('Comunidade')
+    return redirect('/Comunidade/?page=' + page)
 
 @login_required
-def Comunidade_Permitir(request, comu_id=None):
+def Comunidade_Permitir(request, comu_id=None, page=None):
     comu = comunidade.objects.get(pk=comu_id)
     current_user = usuario.objects.get(email=request.user)
     if comu.id != None:
@@ -173,7 +173,7 @@ def Comunidade_Permitir(request, comu_id=None):
         elif comu.permissao == "N":
             comu.permissao = "S"
         comu.save()
-    return redirect('Comunidade')
+    return redirect('/Comunidade/?page=' + page)
 
 @login_required
 def Comunidade_Utilizar(request, comu_id=None):
@@ -240,6 +240,7 @@ def Imagem_Lista(request, comu_id=None):
         curent_comunidade = comunidade.objects.get(id=request.GET.get('comu'))
     else:
         curent_comunidade = comunidade.objects.get(id=comu_id)
+
     ImagemList = imagem.objects.filter(comunidade=curent_comunidade, usuario=current_user).order_by('dataImagem')
     paginator = Paginator(ImagemList, 3)
     page = request.GET.get('page')
@@ -263,26 +264,26 @@ def Imagem_Cadastro(request):
         im.comunidade = comunidade.objects.get(id=request.POST['comu'])
         im.latitude = request.POST['lati']
         im.longitude = request.POST['longi']
-        im.img = request.POST['imagem']
+        im.img = request.FILES['img']
         im.usuario = current_user
         im.save()
         if request.POST.get('monitorar'):
-            return redirect('/monitoramento/?idcomu=' + str(im.comunidade.id) + '&idimagem=' + str(im.id))
+            return HttpResponseRedirect('/monitoramento/?idcomu=' + str(im.comunidade.id) + '&idimagem=' + str(im.id))
         else:
-            return redirect('/Imagem_Lista/' + str(im.comunidade.id) + '/')
+            return HttpResponseRedirect('/Imagem_Lista/' + str(im.comunidade.id) + '/')
 
-    return render(request, 'imagem/cadastro_imagem.html', {'form': form, 'method': 'post'})
+    return render(request, 'imagem/cadastro_imagem.html', {'file': request.FILES})
 
 
 @login_required
-def Imagem_Excluir(request, img_id=None, comu_id=None):
+def Imagem_Excluir(request, img_id=None, comu_id=None, page=None):
     im = imagem.objects.get(pk=img_id)
     if im.id != None:
         im.delete()
-    return redirect('/Imagem_Lista/' + comu_id + '/')
+    return redirect('/Imagem_Lista/' + comu_id + '/?page=' + page)
 
 @login_required
-def Imagem_Permitir(request, comu_id = None, img_id=None):
+def Imagem_Permitir(request, comu_id = None, img_id=None, page=None):
     img = imagem.objects.get(pk=img_id)
     comu = comunidade.objects.get(pk=img.comunidade.pk)
     if img.id != None:
@@ -295,7 +296,7 @@ def Imagem_Permitir(request, comu_id = None, img_id=None):
                 comu.save()
         img.save()
         comu_id = int(img.comunidade.id)
-    return redirect('/Imagem_Lista/' + str(comu_id) + '/')
+    return redirect('/Imagem_Lista/' + str(comu_id) + '/?page=' + page)
 
 @login_required
 def Imagem_Edit(request):
@@ -303,7 +304,7 @@ def Imagem_Edit(request):
         img_id = request.POST['img_id']
         img = imagem.objects.get(pk=img_id)
         if img.id != None:
-            img.dataImagem = request.POST['imagemData']
+            img.dataImagem = request.POST['data']
             img.latitude = request.POST['lati']
             img.longitude = request.POST['longi']
             img.save()
@@ -476,9 +477,15 @@ def resultadoCaso(request):
             distancia += (peso[i] * pesoInstancias[i])
         distancia = distancia
 
-        percent_caso_velho = (caso[3] * 100) / caso[7]
-        percent_caso_novo = (int(novoProblema[3]) * 100) / caso[7]
+        if (int(novoProblema[3]) >= caso[7]):
+            percent_caso_novo = 100
+        else:
+            percent_caso_novo = (int(novoProblema[3]) * 100) / caso[7]
 
+        if (caso[3] >= caso[7]):
+            percent_caso_velho = 100
+        else:
+            percent_caso_velho = (caso[3] * 100) / caso[7]
         distancia_percent = percent_caso_novo - percent_caso_velho
         distancia_percent = abs(distancia_percent)
 
@@ -539,8 +546,12 @@ def resultadoCaso(request):
     #     dados = paginator.page(1)
     # except EmptyPage:
     #     dados = paginator.page(paginator.num_pages)
+    casolist_test = casos.objects.filter(id_usuario=current_user).order_by('-id')
+    for c in casolist_test:
+        restricao = c.restricao.descricao
+        restricao_id = c.restricao.id
     return render(request, 'monitoramento/monitoramento_casos_similares.html',
-                  {"monitorando":monitorando, "novo": novo, "metros": metros, "cor": cor, "plano": plano, "o1": o1, "relac": relac, "o2": o2,
+                  {"rest": restricao, "rest_id": restricao_id, "monitorando":monitorando, "novo": novo, "metros": metros, "cor": cor, "plano": plano, "o1": o1, "relac": relac, "o2": o2,
                    "step": step, "resultado":resultado, "id_comu": current_imagem.comunidade.id, "current_imagem":current_imagem, "id_imagem": id_imagem, 'form': form, 'antigo': antigo,
                    'similaridade': similar})
 
@@ -554,6 +565,7 @@ def monitoramento(request, id_comunidade=None):
     monitorando = True
     if request.POST.get("comu"):
         step = 2
+        form = ImagemForm()
         comunidade_selecionada = request.POST.get("comu")
         c = comunidade.objects.get(id=comunidade_selecionada)
         im = imagem.objects.filter(comunidade=c, usuario=current_user).order_by('dataImagem')
@@ -568,11 +580,13 @@ def monitoramento(request, id_comunidade=None):
         monitorando = True
         return render(request, 'monitoramento/monitoramento_imagem.html',
                       {'monitorando':monitorando, 'step': step, 'comunidades': comunidades, 'comunidade': c,
-                       'id_comunidade': comunidade_selecionada, 'dados': dados})
+                       'id_comunidade': comunidade_selecionada, 'dados': dados, 'form':form})
     elif id_comunidade:
         step = 2
         c = comunidade.objects.get(id=id_comunidade)
         im = imagem.objects.filter(comunidade=c, usuario=current_user).order_by('dataImagem')
+        form = ImagemForm()
+
         paginator = Paginator(im, 3)
         page = request.GET.get('page')
         try:
@@ -585,7 +599,7 @@ def monitoramento(request, id_comunidade=None):
         monitorando = True
         return render(request, 'monitoramento/monitoramento_imagem.html',
                       {'monitorando':monitorando, 'step': step, 'comunidades': comunidades, 'comunidade': c, 'id_comunidade': id_comunidade,
-                       'dados': dados})
+                       'dados': dados, 'form':form})
     elif request.POST.get("imagem_selecionada") or (request.GET.get("idcomu") and request.GET.get("idimagem")):
         step = 3
         if request.POST.get("imagem_selecionada"):
@@ -643,19 +657,32 @@ def cadHistorico(request):
     novoList = novo.split(",")
     simiList = simi.split(",")
 
+    if novoList[1] == "Pertode":
+        novoList[1] = "Perto de"
+    elif novoList[1] == "Dentrode":
+        novoList[1] = "Dentro de"
+
     current_caso = casos.objects.get(id=antigoList[6])
     current_restricao = restricao.objects.get(descricao=current_caso.restricao)
     current_imagem = imagem.objects.get(id=int(id_imagem))
     DistRestricao = current_restricao.distancia
+    current_ob1 = objeto.objects.get(nome=novoList[0])
+    current_rel = relacao.objects.get(nome=novoList[1])
+    current_ob2 = objeto.objects.get(nome=novoList[2])
 
     DistNovo = novoList[3]
     now = datetime.now()
 
     current_user = usuario.objects.get(email=request.user)
 
-    h = historico(usuario=current_user, imagem=current_imagem, data=now, objeto1=novoList[0], relacao=novoList[1],
+    h = historico(usuario=current_user, imagem=current_imagem, dataImagem=current_imagem.dataImagem, lati=current_imagem.latitude, longe=current_imagem.longitude, data=now, objeto1=novoList[0], relacao=novoList[1],
                   objeto2=novoList[2], distancia=DistNovo, resultado=antigoList[4], plano_acao=antigoList[5])
     h.save()
+
+    c = casos( objeto1=current_ob1, relacao=current_rel, objeto2=current_ob2, id_usuario=current_user, distancia=DistNovo, restricao=current_restricao,
+               resultado=antigoList[4], plano_acao=antigoList[5], permissao='S')
+
+    c.save()
 
     relacionamentoAntigo = antigoList[0] + " " + antigoList[1] + " " + antigoList[2]
     relacionamentoNovo = novoList[0] + " " + novoList[1] + " " + novoList[2]
@@ -672,13 +699,34 @@ def cadHistorico(request):
 def Historico(request):
     current_user = usuario.objects.get(email=request.user)
     ComunidadeList = comunidade.objects.filter(id_usuario = current_user)
+    lists_imagens = []
+
     if request.POST.get('comu') or request.GET.get('comu'):
         if request.POST.get('comu'):
             current_comu = comunidade.objects.get(id=request.POST.get('comu'))
         elif request.GET.get('comu'):
             current_comu = comunidade.objects.get(id=request.GET.get('comu'))
         imagemList = imagem.objects.filter(comunidade=current_comu, usuario=current_user).order_by('dataImagem')
-        paginator = Paginator(imagemList, 3)
+        for imlist in imagemList:
+            valor_hist = 0
+            list_validate = {}
+            hist_list = historico.objects.all()
+            for h in hist_list:
+                if h.imagem.id == imlist.id:
+                    valor_hist = 1
+                    break
+
+            list_validate['id'] = imlist.id
+            list_validate['img'] = imlist.img
+            list_validate['usuario'] = imlist.usuario
+            list_validate['dataImagem'] = imlist.dataImagem
+            list_validate['latitude'] = imlist.latitude
+            list_validate['longitude'] = imlist.longitude
+            list_validate['comunidade'] = imlist.comunidade
+            list_validate['permissao'] = imlist.permissao
+            list_validate['hist'] = valor_hist
+            lists_imagens.append(list_validate)
+        paginator = Paginator(lists_imagens, 3)
         page = request.GET.get('page')
         try:
             dados = paginator.page(page)
@@ -688,7 +736,7 @@ def Historico(request):
             dados = paginator.page(paginator.num_pages)
 
         botao = 'historico_imagens'
-        return render(request, 'historico/historico_imagem.html', {"dados": dados, "comunidade": current_comu, "voltar_hist":botao})
+        return render(request, 'historico/historico_imagem.html', {"list_validate": list_validate, "dados": dados, "comunidade": current_comu, "voltar_hist":botao})
     elif request.POST.get("imagem_selecionada") or (request.GET.get("id_comu") and request.GET.get("id_imagem")):
         if request.POST.get("imagem_selecionada"):
             current_comu = comunidade.objects.get(id=request.POST.get('comunidade'))
@@ -696,8 +744,29 @@ def Historico(request):
         elif (request.GET.get("id_comu") and request.GET.get("id_imagem")):
             current_comu = comunidade.objects.get(id=request.GET.get('id_comu'))
             current_imagem = imagem.objects.get(id=request.GET.get("id_imagem"))
-        historicoList = historico.objects.filter(imagem=current_imagem, usuario=current_user)
+        historicoList = historico.objects.filter(imagem=current_imagem, usuario=current_user).order_by('dataImagem')
 
+        paginator = Paginator(historicoList, 3)
+        page = request.GET.get('page')
+        try:
+            dados = paginator.page(page)
+        except PageNotAnInteger:
+            dados = paginator.page(1)
+        except EmptyPage:
+            dados = paginator.page(paginator.num_pages)
+
+
+
+        return render(request, 'historico/historico_final.html',
+                      {"imagem": current_imagem, "dados": dados, 'comunidade': current_comu})
+    elif request.POST.get("imagem_selecionada_lati") or request.GET.get("lati"):
+        if request.POST.get("imagem_selecionada_lati"):
+            current_comu = comunidade.objects.get(id=request.POST.get('comunidade'))
+            current_imagem = imagem.objects.get(id=request.POST.get("imagem_selecionada_lati"))
+        elif (request.GET.get("id_comu_lati") and request.GET.get("id_imagem_lati")):
+            current_comu = comunidade.objects.get(id=request.GET.get('id_comu_lati'))
+            current_imagem = imagem.objects.get(id=request.GET.get("id_imagem_lati"))
+        historicoList = historico.objects.filter(longe=current_imagem.longitude, lati=current_imagem.latitude, usuario=current_user).order_by('dataImagem')
 
         paginator = Paginator(historicoList, 3)
         page = request.GET.get('page')
@@ -709,16 +778,23 @@ def Historico(request):
             dados = paginator.page(paginator.num_pages)
 
         return render(request, 'historico/historico_final.html',
-                      {"imagem": current_imagem, "dados": dados, 'comunidade': current_comu})
+                      {"imagem": current_imagem, "dados": dados, 'comunidade': current_comu, 'lati': current_imagem.latitude, 'longe': current_imagem.longitude})
     else:
         return render(request, 'historico/historico_comu.html', {"comunidades": ComunidadeList})
 
 @login_required
-def Historico_Excluir(request, hist_id=None, imagem_id=None, comu_id=None):
+def Historico_Excluir(request, hist_id=None, imagem_id=None, comu_id=None, page=None):
     h = historico.objects.get(pk=hist_id)
     if h.id != None:
         h.delete()
-    return redirect('/Historico/?id_comu=' + str(comu_id) + '&id_imagem='+ str(imagem_id))
+    return redirect('/Historico/?page=' + page + '&id_comu=' + str(comu_id) + '&id_imagem=' + str(imagem_id))
+
+@login_required()
+def Historico_Excluir_Lati(request, hist_id=None, imagem_id=None, comu_id=None, page=None):
+    h = historico.objects.get(pk=hist_id)
+    if h.id != None:
+        h.delete()
+    return redirect('/Historico/?page=' + page + '&id_comu_lati=' + str(comu_id) + '&id_imagem_lati=' + str(imagem_id) + '&lati=0')
 
 @login_required
 def ComparacaoHist(request):

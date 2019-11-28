@@ -1,4 +1,5 @@
 {% load widget_tweaks %}
+
 <div class="ui modal centered row modalFormComunidade">
     <table class="ui striped celled unstackable table" id="tabela_lista">
         <thead>
@@ -9,7 +10,7 @@
         </tr>
         </thead>
     </table>
-    <form class="ui form" action="/Comunidade_Cadastro/" method="post">
+    <form class="ui form" name="comunidade_form" id="comunidade_form" action="/Comunidade_Cadastro/" method="post">
         {% csrf_token %}
         <div class="modalpadrao">
             <div class="field">
@@ -28,6 +29,32 @@
             </div>
 
             <div class="field">
+                <label>Estado</label>
+                <div class="ui corner labeled input">
+                    <select id="estado1" name="estado" value="TO" required></select>
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Cidade</label>
+                <div class="ui corner labeled input">
+                    <select id="cidade1" name="cidade" value="" required></select>
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+            <script language="JavaScript" type="text/javascript" charset="utf-8">
+                new dgCidadesEstados({
+                    cidade: document.getElementById('cidade1'),
+                    estado: document.getElementById('estado1')
+                })
+            </script>
+
+            <div class="field">
                 <label>Bairro</label>
                 <div class="ui corner labeled input">
                     {{ form.bairro|attr:"required" }}
@@ -42,35 +69,36 @@
                 </div>
             </div>
 
-            <div class="field">
-                <label>Cidade</label>
-                <div class="ui corner labeled input">
-                    {{ form.cidade|attr:"required" }}
-                    {% if form.cidade.errors %}
-                        <div class="ui pointing red basic label">
-                            {{ form.cidade.errors }}
-                        </div>
-                    {% endif %}
-                    <div class="ui corner label">
-                        <i class="asterisk icon"></i>
-                    </div>
-                </div>
-            </div>
 
-            <div class="field">
-                <label>Estado</label>
-                <div class="ui corner labeled input">
-                    {{ form.estado|attr:"required" }}
-                    {% if form.estado.errors %}
-                        <div class="ui pointing red basic label">
-                            {{ form.estado.errors }}
-                        </div>
-                    {% endif %}
-                    <div class="ui corner label">
-                        <i class="asterisk icon"></i>
-                    </div>
-                </div>
-            </div>
+            {#            <div class="field">#}
+            {#                <label>Cidade</label>#}
+            {#                <div class="ui corner labeled input">#}
+            {#                    {{ form.cidade|attr:"required" }}#}
+            {#                    {% if form.cidade.errors %}#}
+            {#                        <div class="ui pointing red basic label">#}
+            {#                            {{ form.cidade.errors }}#}
+            {#                        </div>#}
+            {#                    {% endif %}#}
+            {#                    <div class="ui corner label">#}
+            {#                        <i class="asterisk icon"></i>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+            {##}
+            {#            <div class="field">#}
+            {#                <label>Estado</label>#}
+            {#                <div class="ui corner labeled input">#}
+            {#                    {{ form.estado|attr:"required" }}#}
+            {#                    {% if form.estado.errors %}#}
+            {#                        <div class="ui pointing red basic label">#}
+            {#                            {{ form.estado.errors }}#}
+            {#                        </div>#}
+            {#                    {% endif %}#}
+            {#                    <div class="ui corner label">#}
+            {#                        <i class="asterisk icon"></i>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
             <div class="ui slider checkbox">
                 {% if monitorando %}
                     <input type="checkbox" name="monitorar" checked>

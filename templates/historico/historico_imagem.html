@@ -25,21 +25,28 @@
                             <div class="ui card">
                                 <div class="image">
                                     <span id="corner{{ dado.id }}"></span>
-                                    <img src="/media/media/{{ dado.img }}">
+                                    <img class="imagem_article" src="/media/{{ dado.img }}">
                                 </div>
                                 <div class="content">
                                     <a class="header">{{ dado.dataImagem }}</a>
                                     <div class="item">
-                                        {{ dado.latitude }}
+                                        {{ dado.latitude }} : {{ dado.longitude }}
                                     </div>
-                                    <div class="item">
-                                        {{ dado.longitude }}
-                                    </div>
+
                                     <div class="ui divided list">
-                                        <div class="ui two bottom attached buttons">
-                                            <button class="ui green bottom attached center aligned button" name="imagem_selecionada" value="{{ dado.id }}">
-                                                Acompanhar Histórico
+{#                                        <h2>Histórico</h2>#}
+                                        <div class="ui three bottom attached buttons">
+                                            {% if dado.hist == 1 %}
+                                                <button class="ui green bottom attached center aligned button" name="imagem_selecionada" value="{{ dado.id }}">
+                                                por Data
                                             </button>
+                                            <button class="ui green bottom attached center aligned button" name="imagem_selecionada_lati" value="{{ dado.id }}">
+                                                por Long/Lati
+                                            </button>
+                                            {% else %}
+                                                <br><a href="/monitoramento/?idcomu={{ dado.comunidade.id }}&idimagem={{ dado.id }}" class="ui right labeled icon secundary button cadCaso"><i
+                                                    class="icon add"></i>Monitorar</a>
+                                            {% endif %}
                                         </div>
                                     </div>
 

@@ -50,13 +50,22 @@
                 <div class="five wide field"></div>
                 <div class="six wide field">
                     <label>Restrição</label>
-                    {{ form.restricao|attr:"required" }}
+                    <select name="restricao">
+                        <option value="{{ rest_id }}">{{ rest }}</option>
+                    </select>
+{#                    {{ form.restricao|attr:"required" }}#}
                 </div>
                 {#termina#}
                 {#começa#}
                 <div class="five wide field">
                     <label>Resultados</label>
-                    {{ form.resultado|attr:"required" }}
+                    <select name="resultado">
+                        <option> -------------- </option>
+                        <option name="resultado" value="Verde"> Verde </option>
+                        <option name="resultado" value="Amarelo"> Amarelo </option>
+                        <option name="resultado" value="Vermelho"> Vermelho </option>
+                    </select>
+{#                    {{ form.resultado|attr:"required" }}#}
                 </div>
 
                 {#termina#}

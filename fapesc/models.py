@@ -98,11 +98,11 @@ class comunidade(models.Model):
 
 class imagem(models.Model):
     img = models.ImageField(upload_to='media/', blank=True)
-    usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(usuario, on_delete=models.CASCADE, null=True)
     dataImagem = models.DateField(blank=True)
     latitude = models.CharField(max_length=128)
     longitude = models.CharField(max_length=128)
-    comunidade = models.ForeignKey(comunidade, on_delete=models.CASCADE)
+    comunidade = models.ForeignKey(comunidade, on_delete=models.CASCADE, null=True)
     permissao = models.CharField(max_length=128, default='N')
 
 
@@ -117,7 +117,10 @@ class historico(models.Model):
     usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
     imagem = models.ForeignKey(imagem, null=True, on_delete=models.CASCADE)
     data = models.DateField(blank=True)
+    dataImagem = models.DateField(blank=True, null=True)
     objeto1 = models.CharField(max_length=128)
+    lati = models.CharField(max_length=128, null=True)
+    longe = models.CharField(max_length=128, null=True)
     relacao = models.CharField(max_length=128)
     objeto2 = models.CharField(max_length=128)
     distancia = models.IntegerField(default=0)

@@ -5,10 +5,20 @@
             <table class="ui striped celled unstackable table" id="tabela_lista">
                 <thead>
                 <tr>
-                    <th class="no-sort" colspan="5">
+                    <th class="no-sort" border="1" colspan="9">
+                        {% if lati %}
+                            <div class="ui default ribbon large label">Histórico de {{ imagem.comunidade.nome }}
+                            em {{ longe }}:{{ lati }}</div>
+{#                        <a href="/monitoramento/?idcomu={{ imagem.comunidade.id }}&idimagem={{ imagem.id }}" class="ui right labeled icon secundary button cadCaso"><i#}
+{#                                    class="icon add"></i>Monitorar</a>#}
+                        {% else %}
                         <div class="ui default ribbon large label">Histórico de {{ imagem.comunidade.nome }}
                             em {{ imagem.dataImagem }}</div>
+{#                        <a href="/monitoramento/?idcomu={{ imagem.comunidade.id }}&idimagem={{ imagem.id }}" class="ui right labeled icon secundary button cadCaso"><i#}
+{#                                    class="icon add"></i>Monitorar</a>#}
+                        {% endif %}
                     </th>
+
                 </tr>
                 </thead>
             </table>
@@ -41,10 +51,25 @@
                                         {% endif %}
 
                                     </div>
-                                    <img src="/media//media/{{ dado.imagem.img }}" width="300" height="300"><br>
+                                    <div class="ui corner large left label">
+                                        {{ dado.imagem.dataImagem }}
+                                    </div>
+                                    <img id="zoom_{{ dado.id }}" src="/media/{{ dado.imagem.img }}" width="300" height="300"><br>
+                                <script>
+                                    $('#zoom_{{dado.id}}').elevateZoom({
+                                        scrollZoom: true,
+                                        {#easing: true,#}
+                                        zoomType: "inner",
+                                        cursor: "crosshair",
+                                        zoomWindowPosition: 5,
+                                        zoomWindowFadeIn: 500,
+                                        zoomWindowFadeOut: 750,
+                                     });
+                                 </script>
                                     {{ dado.imagem.comunidade.nome }}<br>
                                     Data do Monitoramento: {{ dado.data }} <br>
-                                    Plano de Ação: {{ dado.plano_acao }}
+                                    Plano de Ação: {{ dado.plano_acao }} <br>
+                                    {{ dado.distancia }} metros
                                 </div>
                             </div>
 
@@ -60,6 +85,36 @@
                     {% endif %}
 
                 </div>
+            {% if lati %}
+                <table class="ui striped celled unstackable table" id="tabela_lista">
+                    <tfoot>
+                    <tr>
+                        <th colspan="5">
+                            <a href="/Historico/?comu={{ imagem.comunidade.id }}"
+                               class="ui left labeled icon botaoProximo button">
+                                <i class="left arrow icon"></i>
+                                Voltar
+                            </a>
+                            <div class="ui right floated pagination secondary menu">
+                                {% if dados.has_previous %}
+                                    <a href="?page={{ dados.previous_page_number }}&id_comu_lati={{ imagem.comunidade.id }}&id_imagem_lati={{ imagem.id }}&lati=0"
+                                       class="icon item">
+                                        <i class="left chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                                <a class="item">Página {{ dados.number }} de {{ dados.paginator.num_pages }}</a>
+                                {% if dados.has_next %}
+                                    <a href="?page={{ dados.next_page_number }}&id_comu_lati={{ imagem.comunidade.id }}&id_imagem_lati={{ imagem.id }}&lati=0"
+                                       class="icon item">
+                                        <i class="right chevron icon"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </th>
+                    </tr>
+                    </tfoot>
+                </table>
+            {% else %}
                 <table class="ui striped celled unstackable table" id="tabela_lista">
                     <tfoot>
                     <tr>
@@ -88,6 +143,7 @@
                     </tr>
                     </tfoot>
                 </table>
+            {% endif %}
 
 
             </form>
