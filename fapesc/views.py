@@ -546,7 +546,11 @@ def resultadoCaso(request):
     #     dados = paginator.page(1)
     # except EmptyPage:
     #     dados = paginator.page(paginator.num_pages)
-    casolist_test = casos.objects.filter(id_usuario=current_user).order_by('-id')
+    if request.POST.get('filtro_caso') == "geral":
+        casolist_test = casos.objects.order_by('-id')
+    else:
+        casolist_test = casos.objects.filter(id_usuario=current_user).order_by('-id')
+
     for c in casolist_test:
         restricao = c.restricao.descricao
         restricao_id = c.restricao.id

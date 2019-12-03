@@ -2,7 +2,8 @@
 <nav class="ui huge borderless inverted menu large grid" id="topo">
     {% if user.is_anonymous %}
         <a class="item" href="/">
-            <img src="#" id="logo"> SMOT
+            <img src="../../static/images/smot_logo_vazio.png" id="logo">
+            <img src="../../static/images/smot_logo_vazio_titulo.png" >
         </a>
         <div class="right menu">
             <a class="item logar">
@@ -12,7 +13,8 @@
         </div>
     {% else %}
         <a class="item" href="/">
-            <img src="#" id="logo"> SMOT
+            <img src="../../static/images/smot_logo_vazio.png" id="logo">
+            <img src="../../static/images/smot_logo_vazio_titulo.png" >
         </a>
 {#        {% if user.is_staff %}#}
             {% include 'menu/menuLogado.html' %}
