@@ -10,9 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os, sys, importlib
-importlib.reload(sys)
+import os
 # sys.setdefaultencoding('utf8')
+
+import environ
+
+env = environ.Env()
+# reading .env file
+environ.Env.read_env()
+
 
 BASE_DIR = (os.path.dirname(os.path.dirname(__file__)))
 
@@ -31,12 +37,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%ifa%i2!*!ffhy)+j#=h^l8-&9ztqrlnxojj5!1b4&_vk^ej2^'
+SECRET_KEY = env('SECRET_KEY', str, "unsafe-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG", bool, True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", list, ["127.0.0.1", "localhost"])
 
 TEMPLATE_DEBUG = DEBUG
 # Application definition
@@ -87,10 +93,7 @@ WSGI_APPLICATION = 'tcc.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite3')
 }
 
 # ESQUEMA DE LOGIN
@@ -135,9 +138,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_PATH = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'  # You may find this is already defined as such.
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "all_static/")
 
 STATICFILES_DIRS = (
     STATIC_PATH,
 )
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
