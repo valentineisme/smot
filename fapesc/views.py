@@ -42,8 +42,27 @@ def CadUser(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
         if form.is_valid():
-            usuario = form.save(commit=False)
-            usuario.save()
+            is_usuario_smot_existente = usuario.objects.filter(email=form.cleaned_data['email']).exists()
+            if is_usuario_smot_existente:
+                raise Exception("Email Existente")
+
+            usuario_django_existente = User.objects.filter(username=form.cleaned_data['email']).first()
+            if usuario_django_existente is not None:
+                usuario_django = usuario_django_existente
+            else:
+                usuario_django = User.objects.create_user(
+                    username=form.cleaned_data['email'],
+                    email=form.cleaned_data['email'],
+                    password=form.cleaned_data['senha']
+                )
+
+            usuario.objects.create(
+                user=usuario_django,
+                nome=form.cleaned_data['nome'],
+                sobrenome=form.cleaned_data['sobrenome'],
+                dataNasc=form.cleaned_data['dataNasc'],
+                email=form.cleaned_data['email']
+            )
     return render(request, 'index.html', {'form': form})
 
 
